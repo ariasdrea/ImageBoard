@@ -1,10 +1,43 @@
 <!doctype html>
 <html>
 <head>
-    <title></title>
+    <title>Imageboard</title>
+    <link rel="stylesheet" href="/styles.css">
+    <link href="https://fonts.googleapis.com/css?family=Lancelot" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
+
 </head>
 <body>
+
+
+    <div id="imageboard">
+        <p id="title">Image | Board </p>
+    </div>
+
+    <div id="main">
+        <!-- LOOP THROUGH AN ARRAY -->
+        <!-- <ul v-for = 'item in pokemon'>
+            <li>{{ item }}</li>
+        </ul> -->
+
+        <!-- LOOP THROUGH AN ARRAY OF OBJECTS -->
+        <!-- <p v-for = "animal in cuteAnimals">
+            {{ animal.name }} -
+            {{ animal.cuteScore }}
+        </p> -->
+
+        <div class="image-div" v-for = 'item in images' >
+            <img :src="item.url">
+            <p id="image-title">{{ item.title }}</p>
+        </div>
+
+
+    </div>
+
+
     <script src="/js/vue.js"></script>
     <script src="/js/axios.min.js"></script>
+    <script src="/js/script.js"></script>
+
 </body>
 </html>
