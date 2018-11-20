@@ -1,7 +1,7 @@
 <!doctype html>
 <html>
 <head>
-    <title>Imageboard</title>
+    <title>I|B</title>
     <link rel="stylesheet" href="/styles.css">
     <link href="https://fonts.googleapis.com/css?family=Lancelot" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
@@ -9,35 +9,94 @@
 </head>
 <body>
 
-
-    <div id="imageboard">
-        <p id="title">Image | Board </p>
+<!-- COMMENT IN WHEN YOU WANT TO ACTIVATE INTRO  -->
+<!-- INTRO PAGE -->
+<!-- <div id='intro'>
+    <div id="intro-info">
+        <p id="intro-name">IMAGE | BOARD</p>
+        <button id="enter-button">enter</button>
     </div>
+</div> -->
+<!-- INTRO PAGE -->
+<!-- COMMENT IN WHEN YOU WANT TO ACTIVATE INTRO  -->
+
+<!-- HEADER & UPLOAD -->
+<!-- <header>
+    <p id="title"> IMAGE | BOARD </p>
+    <p id='uploadText'>upload.</p>
+</header> -->
+
+<!-- POTENTIAL UPLOAD BAR -->
+<!-- <div class = 'side-bar'>
+    <img class ='cross' src="cross.jpg">
+    <form>
+        <input id="side-input" type="text" placeholder="title" name="title">
+        <input id="side-input" type="text" placeholder="description" name="description">
+        <input id="side-input" type="text" placeholder="username" name="username">
+        <button id="side-upload">Upload</button>
+    </form>
+</div> -->
+
+<!-- COMMENT EVERYTHING ABOVE WHEN YOU WANT TO ACTIVATE -->
+
+<hr>
+<!-- HEADER & UPLOAD -->
+
 
     <div id="main">
-        <!-- LOOP THROUGH AN ARRAY -->
-        <!-- <ul v-for = 'item in pokemon'>
-            <li>{{ item }}</li>
-        </ul> -->
 
-        <!-- LOOP THROUGH AN ARRAY OF OBJECTS -->
-        <!-- <p v-for = "animal in cuteAnimals">
-            {{ animal.name }} -
-            {{ animal.cuteScore }}
-        </p> -->
+        <!-- v-model : connects -->
+        <form>
+            <!-- TITLE -->
+            <input v-model='form.title' type="text" placeholder="title" name="title">
 
-        <div class="image-div" v-for = 'item in images' >
-            <img :src="item.url">
-            <p id="image-title">{{ item.title }}</p>
-        </div>
+            <!-- DESCRIPTION -->
+            <input v-model='form.description' type="text" placeholder="description" name="description">
+
+            <!-- USERNAME -->
+            <input v-model='form.username' type="text" placeholder="username" name="username">
+
+            <!-- @change (event handler) - change to input field event fires -->
+            <input type="file" accept="image/*" @change = 'handleFileChange'>
+
+            <!-- when user clicks, run a function called uploadFile -->
+            <!-- @ indicates that anything in string is a function -->
+            <button @click = 'uploadFile'>Upload</button>
+        </form>
+
+            <!-- OBTAIN IMAGES AND TITLE -->
+            <div class="image-div" v-for = 'item in images' >
+                <img :src="item.url">
+                <p id="image-title">{{ item.title }}</p>
+            </div>
+
+
+
+
+
+
+
+
+
+
 
 
     </div>
 
-
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
     <script src="/js/vue.js"></script>
     <script src="/js/axios.min.js"></script>
     <script src="/js/script.js"></script>
-
 </body>
 </html>
+
+<!-- LOOP THROUGH AN ARRAY -->
+<!-- <ul v-for = 'item in pokemon'>
+<li>{{ item }}</li>
+</ul> -->
+
+<!-- LOOP THROUGH AN ARRAY OF OBJECTS -->
+<!-- <p v-for = "animal in cuteAnimals">
+{{ animal.name }} -
+{{ animal.cuteScore }}
+</p> -->

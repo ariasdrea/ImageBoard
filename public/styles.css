@@ -2,21 +2,18 @@
     /* font-family: "Lancelot", cursive; */
     font-family: "Raleway", sans-serif;
     letter-spacing: 1px;
+    /* overflow: hidden; */
 }
 
-#imageboard {
+/* #imageboard {
     text-align: center;
     height: 100px;
     width: 100%;
-}
-
-#title {
-    font-size: 40px;
-}
+} */
 
 img {
-    width: 300px;
-    height: 300px;
+    width: 200px;
+    height: 200px;
     object-fit: cover;
 }
 
@@ -24,9 +21,145 @@ img {
     color: black;
     text-align: center;
     font-weight: bold;
+    white-space: pre-wrap;
+    font-size: 10px;
 }
 
 .image-div {
     display: inline-block;
     border: 2px solid white;
+    /* display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between; */
 }
+
+input[type="file"] {
+    opacity: 0.6;
+}
+
+/* INTRO PAGE */
+
+/* POTENTIAL DESIGN */
+#intro {
+    position: absolute;
+    z-index: 10;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 100%;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 1);
+}
+
+#intro-info {
+    position: relative;
+    text-align: center;
+    color: white;
+    top: 30%;
+}
+
+#intro-name {
+    display: block;
+    font-size: 60px;
+    transition: 2s ease;
+}
+
+#enter-button {
+    display: block;
+    margin: auto;
+    width: 50px;
+    height: 20px;
+    cursor: pointer;
+    color: inherit;
+    background: none !important;
+    padding: 0 !important;
+    border: none;
+    border-bottom: 1px solid #444;
+    font-size: 15px;
+}
+
+#enter-button:hover,
+#enter-button:focus {
+    transition: 1s ease;
+    font-size: 19px;
+    width: 80px;
+    outline: 0;
+}
+
+/* HEADER  */
+
+header {
+    /* margin-bottom: 35px; */
+    display: flex;
+    justify-content: space-between;
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-bottom: 27px;
+}
+
+#title {
+    font-size: 25px;
+    font-weight: bold;
+}
+
+#uploadText,
+#uploadText:hover {
+    float: right;
+    font-size: 20px;
+    cursor: crosshair;
+}
+
+/* POTENTIAL UPLOAD BAR */
+
+.empty {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+}
+
+.cross {
+    height: 25px;
+    width: 25px;
+    float: right;
+    padding-right: 20%;
+    margin-top: 10px;
+}
+
+.side-bar {
+    position: fixed;
+    height: 15%;
+    width: 20%;
+    left: 100%;
+    top: 0;
+    z-index: 2;
+    background-color: white;
+    transition: 2s;
+    font-size: 25px;
+    padding-left: 30px;
+    border-bottom: 1px solid black;
+}
+
+#side-input,
+#side-input:hover {
+    outline: 0;
+    font-weight: bolder;
+}
+
+#side-upload {
+    display: block;
+    margin-top: 10px;
+}
+
+#side-upload:hover {
+    cursor: crosshair;
+    background-color: black;
+    color: white;
+}
+
+.appear {
+    position: fixed;
+    left: 80%;
+}
+
+/* POTENTIAL DESIGN*/
