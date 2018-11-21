@@ -39,7 +39,7 @@ app.use(express.static("./uploads"));
 app.get("/images", (req, res) => {
     db.getImages() //queried the database to get images
         .then(results => {
-            res.json(results); //res.json takes what we pass it and sends it back to vue
+            res.json(results);
         })
         .catch(err => {
             console.log("ERR in GET - IMAGES:", err);
@@ -68,6 +68,18 @@ app.post("/upload", uploader.single("file"), s3.upload, function(req, res) {
             success: false
         });
     }
+});
+
+app.get("/getImageInfo/:id", (req, res) => {
+    let id = req.params.id;
+    db.getImageInfo(id)
+        .then(result => {
+            console.log("results in db.getImageInfo:", result.rows[0]);
+            res.json(result.rows[0]);
+        })
+        .catch(err => {
+            console.log("ERR IN GET-IMAGE INFO:", err);
+        });
 });
 
 app.listen(8080, () => ca.rainbow("listening!"));

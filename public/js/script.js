@@ -5,22 +5,28 @@
 
 (function() {
     Vue.component("some-component", {
-        //configuration for component
         template: "#my-template",
         props: ["imageId"],
         data: function() {
             return {
-                heading: "catnip's first vue component <3"
+                title: "",
+                description: "",
+                url: "",
+                username: ""
             };
         },
 
         mounted: function() {
-            console.log("THIS of vue component", this);
+            var self = this;
 
-            // make an axios request to the server to get info about the image that was clicked on. server will take that id and give it to the database and the db will give us the info about the image that was clicked on. url, title, description, username
-            //write a db query - using select.
-            //server will send it back to vue as a response (res.json)
-            //take response from server and put it in the data in the component. once it's there, just render it.
+            axios.get("/getImageInfo/" + this.imageId).then(function(resp) {
+                console.log("resp.data:", resp.data);
+                self.title = resp.data.title;
+                self.description = resp.data.description;
+                self.url = resp.data.url;
+                console.log("self.url:", self.url);
+                self.username = resp.data.username;
+            });
         },
 
         methods: {
@@ -39,12 +45,9 @@
     new Vue({
         el: "#main",
         data: {
-            firstName: "Andrea Arias",
             images: [],
-            //id of image that was clicked on
             imageId: 0,
             showComponent: false,
-            // tell component to only show up if it is true
             form: {
                 title: "",
                 description: "",
@@ -55,20 +58,16 @@
         mounted: function() {
             var self = this;
             axios.get("/images").then(function(resp) {
-                //resp is res.json(results) in index.js
-                // console.log("resp.data.rows:", resp.data.rows);
                 var imagesFromServer = resp.data.rows;
-                self.images = imagesFromServer; //self.images injects images in empty array above
+                self.images = imagesFromServer;
             });
         }, //mounted function ends
+
         methods: {
-            toggleComponent: function() {
+            toggleComponent: function(e) {
+                var idOfImageThatWasClicked = e.target.id;
+                this.imageId = idOfImageThatWasClicked;
                 this.showComponent = true;
-                // console.log(image of id that was clicked on)
-                // get this logic first
-                //set the value of image id up top to the id of the image.
-                this.ImageId = idOfImageThatWasClicked;
-                // idOfImageThatWasClicked -
             },
 
             closingTheComponent: function() {
@@ -76,11 +75,10 @@
             },
 
             handleFileChange: function(e) {
-                console.log("handle file change running!", e.target.files[0]);
                 this.form.file = e.target.files[0];
             },
             uploadFile: function(e) {
-                e.preventDefault(); //prevents refresh from form
+                e.preventDefault();
                 var self = this;
 
                 var formData = new FormData();
@@ -121,6 +119,5 @@
 //
 // })();
 
-
-comments
-2 input fieds will be in the component script.
+// comments
+// 2 input fieds will be in the component script.

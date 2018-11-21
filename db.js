@@ -21,3 +21,11 @@ exports.uploadImage = (url, username, title, description) => {
         [url || null, username || null, title || null, description || null]
     );
 };
+
+exports.getImageInfo = id => {
+    return db.query(
+        `SELECT *
+        FROM images WHERE id = $1`,
+        [id]
+    );
+};
