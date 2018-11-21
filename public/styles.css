@@ -180,13 +180,17 @@ header {
     z-index: 10;
     transform: translate(-50%, -50%);
     background-color: white;
-    padding-right: 50px;
-    padding-left: 50px;
     transition: 2s ease;
     background-color: black;
     color: white;
+    padding-top: 50px;
 }
 
 #img-in-modal {
+    display: block;
+    margin: auto;
+}
+
+#text-in-modal {
     text-align: center;
 }

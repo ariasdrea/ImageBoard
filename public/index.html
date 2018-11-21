@@ -48,12 +48,10 @@
             <!-- SIDE BAR WORKS - ACTIVATE WHEN READY -->
 
         <form>
-            <!-- v-model : connects -->
             <input v-model='form.title' type="text" placeholder="title" name="title">
             <input v-model='form.description' type="text" placeholder="description" name="description">
             <input v-model='form.username' type="text" placeholder="username" name="username">
             <input type="file" accept="image/*" @change = 'handleFileChange'>
-            <!-- @ indicates that anything in string is a function -->
             <button @click = 'uploadFile'>Upload</button>
         </form>
 
@@ -73,23 +71,16 @@
                 @close-component = 'closingTheComponent'
                 >
             </some-component>
-
-            <!-- make component show up when we click on the image -->
-
-
-<!-- to start make the modal -->
-
     </div>
 
     <script id="my-template" type="text/x-template">
         <!-- all html we want component to have -->
         <div id='modal'>
-            <h1 @click = 'closeComponent'>X</h1>
-            <img id="img-in-modal":src='url'>
-            <h1>Title: {{ title }}</h1>
-            <p>Description: {{ description }}</p>
-            <p>{{ username }}</p>
-            <h1 @click='handleClick'>my template in the script tag is running!!!!</h1>
+            <img id="img-in-modal":src='url' @click = 'closeComponent'>
+            <h1 id='text-in-modal'>{{ title }}</h1>
+            <p id='text-in-modal'>description :{{ description }}</p>
+            <p id='text-in-modal' >uploaded by {{ username }}</p>
+            <!-- <h1 @click='handleClick'>my template in the script tag is running!!!!</h1> -->
         </div>
 
         <!-- COMMENTS TABLE. COMMENT, USERNAME, ID, ID OF IMAGE -->
