@@ -8,6 +8,9 @@ const path = require("path");
 const config = require("./config.json");
 const s3 = require("./s3");
 
+const bodyParser = require("body-parser");
+app.use(bodyParser.json());
+
 app.disable("x-powered-by");
 
 // FILE UPLOAD BOILERPLATE//
