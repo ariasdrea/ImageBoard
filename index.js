@@ -63,23 +63,52 @@ app.post("/upload", uploader.single("file"), s3.upload, function(req, res) {
                 console.log("error in uploadimage:", err);
             });
     } else {
-        console.log("error in POST UPLOAD");
         res.json({
             success: false
         });
     }
 });
 
-app.get("/getImageInfo/:id", (req, res) => {
+app.get("/get-image-info/:id", (req, res) => {
     let id = req.params.id;
+
     db.getImageInfo(id)
         .then(result => {
-            console.log("results in db.getImageInfo:", result.rows[0]);
-            res.json(result.rows[0]);
+            res.json(result.rows);
         })
         .catch(err => {
             console.log("ERR IN GET-IMAGE INFO:", err);
         });
+});
+
+app.get("/get-comments/:id", (req, res) => {
+    let id = req.params.id;
+
+    db.getComments(id).then(result => {
+        res.json(result.rows);
+    });
+});
+
+app.post("/insert-comment/:id", (req, res) => {
+    let comment = req.body.comment;
+    let modalUser = req.body.modalUser;
+    let id = req.params.id;
+
+    db.insertComment(comment, modalUser, id)
+        .then(result => {
+            res.json(result);
+        })
+        .catch(function(err) {
+            console.log("ERR IN POST -INSERT/COMMENT:", err);
+        });
+});
+
+app.get("/get-more-images/:id", (req, res) => {
+    var lastId = req.params.id;
+
+    db.getMoreImages(lastId).then(images => {
+        res.json(images);
+    });
 });
 
 app.listen(8080, () => ca.rainbow("listening!"));

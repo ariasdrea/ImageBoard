@@ -1,0 +1,9 @@
+-- DROP TABLE IF EXISTS comments;
+
+CREATE TABLE comments(
+    id SERIAL PRIMARY KEY,
+    comment VARCHAR(500) NOT NULL,
+    modalUser VARCHAR(10) NOT NULL,
+    images_id INTEGER NOT NULL REFERENCES images(id),
+    added TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);

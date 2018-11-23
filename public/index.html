@@ -9,88 +9,116 @@
 </head>
 <body>
 
-<!-- COMMENT IN WHEN YOU WANT TO ACTIVATE INTRO  -->
 <!-- INTRO PAGE -->
+<div id='intro-page'>
+    <transition name="fade" v-if="show">
+        <div id='intro'>
+            <div id="intro-info">
+                <p id="intro-name">IMAGE | BOARD</p>
+                <div id='intro-button-div'>
+                    <button id="enter-button" v-on:click="show = !show">enter</button>
+                </div>
+            </div>
+        </div>
+    </transition>
+</div>
 
-<!-- <div id='intro'>
-    <div id="intro-info">
-        <p id="intro-name">IMAGE | BOARD</p>
-        <button id="enter-button">enter</button>
-    </div>
-</div> -->
-<!-- HEADER & UPLOAD TEXT -->
-
-<!-- <header>
+<!-- HEADER & UPLOAD SIDE NAV -->
+<header id="upload-nav">
     <p id="title"> IMAGE | BOARD </p>
-    <p id='uploadText'>upload.</p>
-</header> -->
+    <p id='uploadText' v-on:click="show = !show">upload.</p>
+</header>
 
 <hr>
-<!-- HEADER & UPLOAD -->
 
+<!-- SIDE BAR WORKS - ACTIVATE WHEN READY-->
+<div id="upload-nav">
+    <transition name="fade" v-if="show">
+        <div class = 'side-bar'>
+            <img class ='cross' src="cross.jpg">
+            <form>
+                <input id="side-input" v-model='form.title' type="text" placeholder="title" name="title">
 
-    <div id="main">
-            <!-- SIDE BAR WORKS - ACTIVATE WHEN READY-->
-            <!-- <div class = 'side-bar'>
-                <img class ='cross' src="cross.jpg">
-                <form>
-                    <input id="side-input" v-model='form.title' type="text" placeholder="title" name="title">
+                <input id="side-input" v-model='form.description' type="text" placeholder="description" name="description">
 
-                    <input id="side-input" v-model='form.description' type="text" placeholder="description" name="description">
+                <input id="side-input" v-model='form.username' type="text" placeholder="username" name="username">
 
-                    <input id="side-input" v-model='form.username' type="text" placeholder="username" name="username">
+                <input type="file" accept="image/*" @change = 'handleFileChange'>
 
-                    <input type="file" accept="image/*" @change = 'handleFileChange'>
+                <button id="side-upload"  @click = 'uploadFile'>Upload</button>
+            </form>
+        </div>
+    </transition>
+</div>
+<!-- SIDE BAR WORKS - ACTIVATE WHEN READY -->
 
-                    <button id="side-upload"  @click = 'uploadFile'>Upload</button>
-                </form>
-            </div> -->
-            <!-- SIDE BAR WORKS - ACTIVATE WHEN READY -->
+<div id="main">
 
-        <form>
+        <!-- <form>
             <input v-model='form.title' type="text" placeholder="title" name="title">
             <input v-model='form.description' type="text" placeholder="description" name="description">
             <input v-model='form.username' type="text" placeholder="username" name="username">
             <input type="file" accept="image/*" @change = 'handleFileChange'>
             <button @click = 'uploadFile'>Upload</button>
-        </form>
+        </form> -->
 
             <!--  IMAGES AND TITLE -->
             <div class="image-div" v-for = 'item in images' @click="toggleComponent">
-                <img :src="item.url" :id="item.id">
-                <div id="item-text">
-                    <p id="image-title">{{ item.title }}</p>
-                </div>
+
+                <a :href=" '#' + item.id">
+                    <img :src="item.url" :id="item.id">
+                    <div id="item-text">
+                        <p id="image-title">{{ item.title }}</p>
+                    </div>
+                </a>
+
+
             </div>
             <!--  IMAGES AND TITLE -->
+
+            <!-- MORE BUTTON -->
+            <div id='more-button-div'>
+                <button id='more-button' @click ='getMoreImages'>More</button>
+            </div>
 
             <!--orange is component, green is vue instance  -->
             <some-component
                 :image-id='imageId'
-                v-if='showComponent'
+                v-if='imageId'
                 @close-component = 'closingTheComponent'
                 >
             </some-component>
-    </div>
+</div>
 
-    <script id="my-template" type="text/x-template">
-        <!-- all html we want component to have -->
-        <div id='modal'>
-            <img id="img-in-modal":src='url' @click = 'closeComponent'>
-            <h1 id='text-in-modal'>{{ title }}</h1>
-            <p id='text-in-modal'>description :{{ description }}</p>
-            <p id='text-in-modal' >uploaded by {{ username }}</p>
-            <!-- <h1 @click='handleClick'>my template in the script tag is running!!!!</h1> -->
-        </div>
+    <script id="upload-side" type="text/x-template">
 
-        <!-- COMMENTS TABLE. COMMENT, USERNAME, ID, ID OF IMAGE -->
-        <!-- add 2 input fields (comment and username) and a button -->
-        <!-- when you click on the button, capture the input and make a post request, insert them into the database, etc -->
-        <!-- same as the image upload -->
 
     </script>
 
-    <!-- how to make the text show up on click on each image-->
+    <script id="my-template" type="text/x-template">
+        <div id='modal'>
+            <img id="img-in-modal":src='url' @click = 'closeComponent'>
+            <h1 id='text-in-modal'>{{ title }}</h1>
+            <p id='text-in-modal'>description: {{ description }}</p>
+            <p id='text-in-modal'>uploaded by {{ username }}</p>
+            <!-- <h1 @click='handleClick'>my template in the script tag is running!!!!</h1> -->
+            <hr id="hr-in-modal">
+            <!-- COMMENT FORM -->
+            <form>
+                <p>Comment
+                    <input v-model="form.comment" type="text" placeholder="insert your comment" name="comment">
+                </p>
+                <p>Username
+                    <input v-model="form.modalUser" type="text" placeholder="username" name="modalUser">
+                </p>
+                <button @click = 'insertComment'>Submit</button>
+            </form>
+            <div id="commentsInModal" v-for = "each in comments">
+                <p id='comment-in-modal'>{{ each.comment }} </p>
+                <p id='modaluser-in-comment'> {{ each.modaluser }}</p>
+            </div>
+        </div>
+    </script>
 
     <!-- <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script> -->
     <script src="/js/vue.js"></script>
