@@ -23,37 +23,38 @@
     </transition>
 </div>
 
-<!-- HEADER & UPLOAD SIDE NAV -->
-<header id="upload-nav">
-    <p id="title"> IMAGE | BOARD </p>
-    <p id='uploadText' v-on:click="show = !show">upload.</p>
-</header>
-
-<hr>
-
-<!-- SIDE BAR WORKS - ACTIVATE WHEN READY-->
-<div id="upload-nav">
-    <transition name="fade" v-if="show">
-        <div class = 'side-bar'>
-            <img class ='cross' src="cross.jpg">
-            <form>
-                <input id="side-input" v-model='form.title' type="text" placeholder="title" name="title">
-
-                <input id="side-input" v-model='form.description' type="text" placeholder="description" name="description">
-
-                <input id="side-input" v-model='form.username' type="text" placeholder="username" name="username">
-
-                <input type="file" accept="image/*" @change = 'handleFileChange'>
-
-                <button id="side-upload"  @click = 'uploadFile'>Upload</button>
-            </form>
-        </div>
-    </transition>
-</div>
-<!-- SIDE BAR WORKS - ACTIVATE WHEN READY -->
 
 <div id="main">
+    <!-- HEADER & UPLOAD SIDE NAV -->
+    <header id="upload-nav">
+        <p id="title"> IMAGE | BOARD </p>
+        <!-- <p id='uploadText' v-on:click="show = !show">upload.</p> -->
+        <p id='uploadText' v-on:click="show">upload.</p>
+    </header>
 
+    <hr>
+
+
+    <!-- SIDE BAR WORKS - ACTIVATE WHEN READY-->
+    <div id="upload-nav" :class='showUp'>
+        <transition name="fade" v-if="show">
+            <div class = 'side-bar'>
+                <img class ='cross' src="cross.jpg">
+                <form>
+                    <input id="side-input" v-model='form.title' type="text" placeholder="title" name="title">
+
+                    <input id="side-input" v-model='form.description' type="text" placeholder="description" name="description">
+
+                    <input id="side-input" v-model='form.username' type="text" placeholder="username" name="username">
+
+                    <input type="file" accept="image/*" @change = 'handleFileChange'>
+
+                    <button id="side-upload"  @click = 'uploadFile'>Upload</button>
+                </form>
+            </div>
+        </transition>
+    </div>
+    <!-- SIDE BAR WORKS - ACTIVATE WHEN READY -->
         <!-- <form>
             <input v-model='form.title' type="text" placeholder="title" name="title">
             <input v-model='form.description' type="text" placeholder="description" name="description">

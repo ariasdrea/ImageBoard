@@ -100,16 +100,22 @@
         }
     });
 
-    new Vue({
-        el: "#upload-nav",
-        data: {
-            show: true
-        }
-    });
+    // new Vue({
+    //     el: "#upload-nav",
+    //     data: {
+    //         show: true
+    //
+    //     },
+    //
+    //     methods: {
+    //         show:
+    //     }
+    // });
 
     new Vue({
         el: "#main",
         data: {
+            showUp: "",
             enter: true,
             images: [],
             imageId: location.hash.slice(1) || 0,
@@ -140,6 +146,14 @@
         },
 
         methods: {
+            show: function() {
+                if (this.showUp == "unhide") {
+                    this.showUp = "";
+                } else {
+                    this.showUp = "unhide";
+                }
+            },
+
             getMoreImages: function() {
                 var self = this;
                 var lastId = this.images[this.images.length - 1].id;
@@ -184,20 +198,20 @@
 // try to do everything the vue way.
 // dynamically add class to element
 // use vue logic to add class to the element and in css style that element.
-
-$(document).ready(function() {
-    let uploadText = $("#uploadText");
-    let sideBar = $(".side-bar");
-    let cross = $(".cross");
-
-    uploadText.on("click", function() {
-        sideBar.addClass("appear");
-    });
-
-    cross.on("click", function() {
-        sideBar.removeClass("appear");
-    });
-})();
+//
+// $(document).ready(function() {
+//     let uploadText = $("#uploadText");
+//     let sideBar = $(".side-bar");
+//     let cross = $(".cross");
+//
+//     uploadText.on("click", function() {
+//         sideBar.addClass("appear");
+//     });
+//
+//     cross.on("click", function() {
+//         sideBar.removeClass("appear");
+//     });
+// })();
 
 // comments
 // 2 input fieds will be in the component script.
