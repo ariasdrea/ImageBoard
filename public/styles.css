@@ -1,26 +1,36 @@
 * {
-    /* font-family: "Lancelot", cursive; */
     font-family: "Raleway", sans-serif;
     letter-spacing: 1px;
-    /* overflow: hidden; */
+    /* margin: 0 auto; */
 }
 
 form {
-    margin-bottom: 30px;
     text-align: center;
 }
 
+.all-images {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
 .image-div {
-    display: inline-block;
+    /* display: inline-block; */
+    margin: 0 auto;
     border: 2px solid white;
-    /* text-align: center; */
     position: relative;
 }
 
 img {
-    width: 350px;
-    height: 350px;
+    width: 460px;
+    height: 460px;
     object-fit: cover;
+}
+
+#hr-in-form {
+    width: 70%;
+    margin-bottom: 40px;
+    border: 0.5px solid black;
 }
 
 #item-text {
@@ -32,12 +42,11 @@ img {
 }
 
 #image-title {
-    /* color: black; */
     color: white;
     text-align: center;
     font-weight: bolder;
     white-space: pre-wrap;
-    font-size: 12px;
+    font-size: 13px;
 }
 
 input[type="file"] {
@@ -45,8 +54,6 @@ input[type="file"] {
 }
 
 /* INTRO PAGE */
-
-/* POTENTIAL DESIGN */
 #intro {
     position: absolute;
     z-index: 20;
@@ -101,106 +108,59 @@ input[type="file"] {
     outline: 0;
 }
 
-/* HEADER  */
+.fade-enter-active,
+.fade-leave-active {
+    transition: opacity 0.8s ease-out;
+}
 
+.fade-enter,
+.fade-leave-to {
+    opacity: 0;
+}
+
+/* HEADER  */
 header {
-    display: flex;
-    justify-content: space-between;
     padding-left: 20px;
     padding-right: 20px;
+    text-align: center;
 }
 
 #title {
-    font-size: 25px;
+    display: inline-block;
+    position: relative;
     font-weight: bold;
+    font-size: 35px;
+    letter-spacing: 2px;
 }
 
-#uploadText {
-    float: right;
-    font-size: 25px;
+form {
+    margin-top: 20px;
+    margin-bottom: 20px;
 }
-
-#uploadText:hover {
-    font-weight: bold;
-    cursor: crosshair;
-    color: magenta;
-}
-
-/* POTENTIAL UPLOAD BAR */
-
-.empty {
-    position: absolute;
-    height: 100%;
-    width: 100%;
-}
-
-.cross {
-    height: 25px;
-    width: 25px;
-    float: right;
-    padding-right: 20%;
-    margin-top: 10px;
-}
-
-.side-bar {
-    position: fixed;
-    height: 15%;
-    width: 20%;
-    left: 100%;
-    top: 0;
-    z-index: 2;
-    background-color: white;
-    transition: 2s;
-    font-size: 25px;
-    padding-left: 30px;
-    border-bottom: 1px solid black;
-}
-
-#side-input,
-#side-input:hover {
-    outline: 0;
-    font-weight: bolder;
-}
-
-#side-upload {
-    display: block;
-    margin-top: 10px;
-}
-
-#side-upload:hover {
-    cursor: crosshair;
-    background-color: black;
-    color: white;
-}
-
-.unhide {
-    position: fixed;
-    left: 80%;
-}
-
-/* POTENTIAL DESIGN*/
 
 /* MODAL */
 #modal {
-    position: absolute;
+    position: fixed;
     z-index: 10;
     top: 50%;
     left: 50%;
     width: 30%;
-    z-index: 10;
     transform: translate(-50%, -50%);
     background-color: white;
     transition: 2s ease;
     background-color: black;
     color: white;
-    padding-top: 10px;
+    padding-top: 20px;
 }
 
 #img-in-modal {
-    display: block;
     margin: auto;
     cursor: pointer;
     padding-top: 10px;
+    display: block;
+    width: 300px;
+    height: 300px;
+    object-fit: cover;
 }
 
 #text-in-modal {
@@ -212,10 +172,6 @@ header {
     width: 70%;
 }
 
-#more-button {
-    cursor: crosshair;
-}
-
 #commentsInModal {
     display: flex;
 }
@@ -224,6 +180,8 @@ header {
     display: inline-block;
     width: 50%;
     text-align: center;
+    margin: 0 auto;
+    margin-bottom: 10px;
 }
 
 #modaluser-in-comment {
@@ -232,14 +190,50 @@ header {
     text-align: center;
 }
 
-/* --------------- */
-
-.fade-enter-active,
-.fade-leave-active {
-    transition: 0.8s;
+/* MORE BUTTON */
+#more-button-div {
+    width: 100%;
+    text-align: center;
 }
 
-.fade-enter,
-.fade-leave-to {
-    opacity: 0;
+#more-button {
+    cursor: crosshair;
+    width: 70px;
+    height: 20px;
+}
+
+#more-button:hover,
+.upload-button:hover,
+.submit-in-modal:hover {
+    background-color: black;
+    color: white;
+    font-weight: bold;
+    cursor: crosshair;
+}
+
+/* INPUT FIELD */
+input {
+    border-radius: 900em;
+    padding: 5px;
+    margin-right: 10px;
+}
+
+input:focus,
+select:focus,
+textarea:focus,
+button:focus {
+    outline: none;
+}
+
+/* OVERLAY */
+#overlay {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 100%;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    transition: 1s ease;
 }

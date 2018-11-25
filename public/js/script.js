@@ -1,13 +1,5 @@
 // DO NOT USE ARROW FUNCTIONS
 (function() {
-    // Vue.component("upload-nav", {
-    //     template: "#upload-side",
-    //     data: function() {
-    //         return {
-    //             show: true
-    //         };
-    //     }
-    // });
     Vue.component("some-component", {
         template: "#my-template",
         props: ["imageId"],
@@ -38,8 +30,6 @@
                         self.url = resp.data.url;
                         self.username = resp.data.username;
                     });
-                ///new image id is this.imageId
-                //give imageId to the server which will got to the database with comments, sends it back to vue and we'll render it/put it in a data comonent object. same data flow as the mounted function below. --end of part4
             }
         },
 
@@ -68,10 +58,6 @@
         },
 
         methods: {
-            // handleClick: function() {
-            //     console.log("clicked!!!!!!!");
-            // },
-
             closeComponent: function() {
                 this.$emit("close-component");
             },
@@ -100,24 +86,12 @@
         }
     });
 
-    // new Vue({
-    //     el: "#upload-nav",
-    //     data: {
-    //         show: true
-    //
-    //     },
-    //
-    //     methods: {
-    //         show:
-    //     }
-    // });
-
     new Vue({
         el: "#main",
         data: {
             showUp: "",
-            enter: true,
             images: [],
+            morePics: true,
             imageId: location.hash.slice(1) || 0,
             form: {
                 title: "",
@@ -147,16 +121,20 @@
 
         methods: {
             show: function() {
-                if (this.showUp == "unhide") {
+                if (this.showUp == "appear") {
                     this.showUp = "";
                 } else {
-                    this.showUp = "unhide";
+                    this.showUp = "appear";
                 }
             },
 
             getMoreImages: function() {
                 var self = this;
                 var lastId = this.images[this.images.length - 1].id;
+
+                if (lastId == 1) {
+                    self.morePics = false;
+                }
 
                 axios.get("/get-more-images/" + lastId).then(function(resp) {
                     self.images.push.apply(self.images, resp.data);
@@ -186,10 +164,15 @@
                 formData.append("username", this.form.username);
                 formData.append("file", this.form.file);
 
-                axios.post("/upload", formData).then(function(resp) {
-                    var uploadedImage = resp.data[0];
-                    self.images.unshift(uploadedImage);
-                });
+                axios
+                    .post("/upload", formData)
+                    .then(function(resp) {
+                        var uploadedImage = resp.data[0];
+                        self.images.unshift(uploadedImage);
+                    })
+                    .catch(function(err) {
+                        return err;
+                    });
             }
         }
     });
@@ -198,20 +181,3 @@
 // try to do everything the vue way.
 // dynamically add class to element
 // use vue logic to add class to the element and in css style that element.
-//
-// $(document).ready(function() {
-//     let uploadText = $("#uploadText");
-//     let sideBar = $(".side-bar");
-//     let cross = $(".cross");
-//
-//     uploadText.on("click", function() {
-//         sideBar.addClass("appear");
-//     });
-//
-//     cross.on("click", function() {
-//         sideBar.removeClass("appear");
-//     });
-// })();
-
-// comments
-// 2 input fieds will be in the component script.

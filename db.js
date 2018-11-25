@@ -9,7 +9,7 @@ exports.getImages = () => {
         `SELECT *
         FROM images
         ORDER BY id DESC
-        LIMIT 2`
+        LIMIT 3`
     );
 };
 
@@ -47,7 +47,7 @@ exports.getMoreImages = lastId => {
         FROM images
         WHERE id < $1
         ORDER BY id DESC
-        LIMIT 2`,
+        LIMIT 3`,
             [lastId]
         )
         .then(results => {
