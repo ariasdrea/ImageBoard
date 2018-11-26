@@ -25,6 +25,7 @@
         </transition>
     </div>
 
+    <!-- MAIN ELEMENT STARTS -->
     <div id="main">
         <header>
             <p id="title"> IMAGE | BOARD </p>
@@ -68,13 +69,14 @@
     <script id="my-template" type="text/x-template">
         <div id='overlay'>
             <div id='modal'>
-                <img id="img-in-modal" :src='url' @click = 'closeComponent'>
                 <h1 id='text-in-modal'>{{ title }}</h1>
+                <img id="img-in-modal" :src='url' @click = 'closeComponent'>
                 <p id='text-in-modal'>description: {{ description }}</p>
                 <p id='text-in-modal'>uploaded by {{ username }}</p>
-                <hr id="hr-in-modal">
-                <!-- COMMENT FORM -->
+
+                <!-- COMMENTS -->
                 <form>
+                    <hr id="hr-in-modal">
                     <p>Comment
                         <input v-model="form.comment" type="text" placeholder="insert your comment" name="comment">
                     </p>
@@ -83,8 +85,9 @@
                     </p>
                     <button class='submit-in-modal' @click = 'insertComment'>Submit</button>
                 </form>
+
                 <div id="commentsInModal" v-for = "each in comments">
-                    <p id='comment-in-modal'>{{ each.comment }} | {{ each.modaluser}}</p>
+                    <p id='comment-in-modal'>{{ each.comment }} | posted by {{ each.modaluser}}</p>
                 </div>
             </div>
         </div>

@@ -1,7 +1,6 @@
 * {
     font-family: "Raleway", sans-serif;
     letter-spacing: 1px;
-    /* margin: 0 auto; */
 }
 
 form {
@@ -15,7 +14,6 @@ form {
 }
 
 .image-div {
-    /* display: inline-block; */
     margin: 0 auto;
     border: 2px solid white;
     position: relative;
@@ -80,7 +78,7 @@ input[type="file"] {
 
 #intro-name {
     display: block;
-    font-size: 60px;
+    font-size: 70px;
     transition: 2s ease;
 }
 
@@ -95,15 +93,15 @@ input[type="file"] {
     background: none !important;
     padding: 0 !important;
     border: none;
-    border-bottom: 1px solid #444;
-    font-size: 15px;
+    border-bottom: 2px solid #444;
+    font-size: 18px;
     z-index: 50;
 }
 
 #enter-button:hover,
 #enter-button:focus {
     transition: 1s ease;
-    font-size: 19px;
+    font-size: 20px;
     width: 80px;
     outline: 0;
 }
@@ -156,7 +154,6 @@ form {
 #img-in-modal {
     margin: auto;
     cursor: pointer;
-    padding-top: 10px;
     display: block;
     width: 300px;
     height: 300px;
@@ -170,6 +167,7 @@ form {
 #hr-in-modal {
     color: white;
     width: 70%;
+    margin-bottom: 15px;
 }
 
 #commentsInModal {
@@ -178,7 +176,7 @@ form {
 
 #comment-in-modal {
     display: inline-block;
-    width: 50%;
+    width: 80%;
     text-align: center;
     margin: 0 auto;
     margin-bottom: 10px;

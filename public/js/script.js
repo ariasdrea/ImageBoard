@@ -19,16 +19,16 @@
 
         watch: {
             imageId: function() {
-                console.log("watcher running!", this.imageId);
-
+                console.log('this.imageId:', this.imageId);
                 var self = this;
                 axios
                     .get("/get-image-info/" + this.imageId)
                     .then(function(resp) {
-                        self.title = resp.data.title;
-                        self.description = resp.data.description;
-                        self.url = resp.data.url;
-                        self.username = resp.data.username;
+                        console.log('resp:', resp);
+                        self.title = resp.data[0].title;
+                        self.description = resp.data[0].description;
+                        self.url = resp.data[0].url;
+                        self.username = resp.data[0].username;
                     });
             }
         },
@@ -48,7 +48,6 @@
                     axios
                         .get("/get-comments/" + self.imageId)
                         .then(function(resp) {
-                            console.log(resp.data);
                             self.comments = resp.data;
                         });
                 })
@@ -68,8 +67,6 @@
                 axios
                     .post("/insert-comment/" + this.imageId, self.form)
                     .then(function(resp) {
-                        console.log("resp in show-COMMENTS:", resp);
-                        console.log("info", resp.data.rows[0]);
                         self.comments.unshift(resp.data.rows[0]);
                     })
                     .catch(function(err) {
@@ -101,16 +98,11 @@
             }
         },
         mounted: function() {
-            // BONUS FEATURE 3 - do something in set interval to check for new images
-            // setInterval(function(){
-            //     console.log('yoooooo');
-            // }, 3000);
-
             var self = this;
 
             window.addEventListener("hashchange", function() {
                 self.imageId = location.hash.slice(1);
-                //check that the id actually corresponds to an image id. so if you put 100 and we dont have an image 100, then handle that. we don't want to do anything.
+
             });
 
             axios.get("/images").then(function(resp) {
@@ -132,7 +124,7 @@
                 var self = this;
                 var lastId = this.images[this.images.length - 1].id;
 
-                if (lastId == 1) {
+                if (lastId == 2) {
                     self.morePics = false;
                 }
 
@@ -177,7 +169,3 @@
         }
     });
 })();
-
-// try to do everything the vue way.
-// dynamically add class to element
-// use vue logic to add class to the element and in css style that element.
