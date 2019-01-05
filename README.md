@@ -14,10 +14,12 @@ Instagram inspired single-page application website where anyone can post an imag
 <img src="public/intro.gif">
 
 <br>
+<br>
 
 **_Uploading an Image_**
 <img src="public/upload.gif">
 
+<br>
 <br>
 
 **_Commenting on Images_**
