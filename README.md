@@ -11,16 +11,19 @@ Instagram inspired single-page application website where anyone can post an imag
 ## Preview
 
 **_Intro Page and Loading Images_**
+<br>
 <img src="public/intro.gif">
 
 <br>
 <br>
 
 **_Uploading an Image_**
+<br>
 <img src="public/upload.gif">
 
 <br>
 <br>
 
 **_Commenting on Images_**
+<br>
 <img src="public/commenting.gif">
