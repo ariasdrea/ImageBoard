@@ -2,7 +2,7 @@
 
 ## Overview
 
-Instagram inspired single-page application website where anyone can post an image of their choosing, along with a title and description as well as being able to comment. The theme of this imageboard are beautiful doors around the world.
+Instagram-inspired, single-page application website where anyone can post an image of their choosing, add a title and description, and comment on images. The theme of this imageboard is beautiful doors around the world.
 
 ## Technology
 
