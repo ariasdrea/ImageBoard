@@ -31,7 +31,6 @@ var uploader = multer({
         fileSize: 2097152
     }
 });
-// FILE UPLOAD BOILERPLATE//
 
 app.use(express.static("./public"));
 app.use(express.static("./uploads"));

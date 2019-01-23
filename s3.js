@@ -38,4 +38,4 @@ exports.upload = function(req, res, next) {
             res.sendStatus(500);
         }
     });
-}; //end of upload function
+};
