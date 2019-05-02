@@ -38,6 +38,7 @@ app.use(express.static("./uploads"));
 app.get("/images", (req, res) => {
     db.getImages() //queried the database to get images
         .then(results => {
+            // console.log("results in get images:", results);
             res.json(results);
         })
         .catch(err => {

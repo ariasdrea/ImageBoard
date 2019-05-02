@@ -32,6 +32,7 @@
         </header>
 
         <hr id='hr-in-form'>
+
         <form>
             <input v-model='form.title' type="text" placeholder="title" name="title">
             <input v-model='form.description' type="text" placeholder="description" name="description">
@@ -39,6 +40,7 @@
             <input type="file" accept="image/*" @change='handleFileChange'>
             <button class='upload-button' @click='uploadFile'>Upload</button>
         </form>
+
         <hr id='hr-in-form'>
 
         <!--  IMAGES AND TITLE -->

@@ -19,12 +19,12 @@
 
         watch: {
             imageId: function() {
-                console.log('this.imageId:', this.imageId);
+                console.log("this.imageId:", this.imageId);
                 var self = this;
                 axios
                     .get("/get-image-info/" + this.imageId)
                     .then(function(resp) {
-                        console.log('resp:', resp);
+                        console.log("resp:", resp);
                         self.title = resp.data[0].title;
                         self.description = resp.data[0].description;
                         self.url = resp.data[0].url;
@@ -102,10 +102,10 @@
 
             window.addEventListener("hashchange", function() {
                 self.imageId = location.hash.slice(1);
-
             });
 
             axios.get("/images").then(function(resp) {
+                console.log("resp.data:", resp.data);
                 var imagesFromServer = resp.data.rows;
                 self.images = imagesFromServer;
             });
@@ -124,7 +124,7 @@
                 var self = this;
                 var lastId = this.images[this.images.length - 1].id;
 
-                if (lastId == 2) {
+                if (lastId == 4) {
                     self.morePics = false;
                 }
 
