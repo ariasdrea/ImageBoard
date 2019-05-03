@@ -13,6 +13,16 @@ exports.getImages = () => {
     );
 };
 
+//query to use for more button - this will give us the total of rows (pictures) that exists in the database. We then compare this number to the images array length to see if they both match.
+exports.getAllImages = () => {
+    return db.query(
+        `SELECT *
+        FROM images
+        ORDER BY id DESC
+        `
+    );
+};
+
 exports.uploadImage = (url, username, title, description) => {
     return db.query(
         `INSERT INTO images (url, username, title, description)

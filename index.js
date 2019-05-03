@@ -36,9 +36,20 @@ app.use(express.static("./public"));
 app.use(express.static("./uploads"));
 
 app.get("/images", (req, res) => {
-    db.getImages() //queried the database to get images
+    db.getImages() //queried the database to get images but limit them to 3
         .then(results => {
-            // console.log("results in get images:", results);
+            console.log("results in get images:", results);
+            res.json(results);
+        })
+        .catch(err => {
+            console.log("ERR in GET - IMAGES:", err);
+        });
+});
+
+app.get("/getAllImages", (req, res) => {
+    db.getAllImages() //queried the database to get all images
+        .then(results => {
+            console.log("results in get images:", results);
             res.json(results);
         })
         .catch(err => {

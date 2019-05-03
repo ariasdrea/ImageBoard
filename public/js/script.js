@@ -95,7 +95,8 @@
                 description: "",
                 username: "",
                 file: null
-            }
+            },
+            totalImages: ""
         },
         mounted: function() {
             var self = this;
@@ -105,7 +106,7 @@
             });
 
             axios.get("/images").then(function(resp) {
-                console.log("resp.data:", resp.data);
+                // console.log("resp.data in get images:", resp.data);
                 var imagesFromServer = resp.data.rows;
                 self.images = imagesFromServer;
             });
@@ -124,13 +125,25 @@
                 var self = this;
                 var lastId = this.images[this.images.length - 1].id;
 
-                if (lastId == 4) {
-                    self.morePics = false;
-                }
-
                 axios.get("/get-more-images/" + lastId).then(function(resp) {
                     self.images.push.apply(self.images, resp.data);
+                    // console.log("self.images:", self.images); //console logs the array to view length as you put pictures into the id when you hit the more button
+                    // console.log("resp.data in get more images:", resp.data);
                 });
+
+                axios.get("/getAllImages").then(function(resp) {
+                    var totalImagesInDb = resp.data.rowCount;
+                    self.totalImages = totalImagesInDb;
+                    // console.log("this.totalImages:", this.totalImages);
+                });
+
+                // console.log("self.images.length + 3:", self.images.length + 3);
+
+                // (Added + 3 since when the page mounts, 3 images are already on the page but not in the array)
+
+                if (self.images.length + 3 === self.totalImages) {
+                    self.morePics = false;
+                }
             },
 
             toggleComponent: function(e) {
