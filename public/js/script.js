@@ -109,6 +109,7 @@
                 // console.log("resp.data in get images:", resp.data);
                 var imagesFromServer = resp.data.rows;
                 self.images = imagesFromServer;
+                console.log("self.images in mounted:", self.images);
             });
         },
 
@@ -125,25 +126,23 @@
                 var self = this;
                 var lastId = this.images[this.images.length - 1].id;
 
-                axios.get("/get-more-images/" + lastId).then(function(resp) {
-                    self.images.push.apply(self.images, resp.data);
-                    // console.log("self.images:", self.images); //console logs the array to view length as you put pictures into the id when you hit the more button
-                    // console.log("resp.data in get more images:", resp.data);
-                });
-
+                //Get all images from the database and access the property rowCount to get the total # of images in db.
                 axios.get("/getAllImages").then(function(resp) {
                     var totalImagesInDb = resp.data.rowCount;
                     self.totalImages = totalImagesInDb;
                     // console.log("this.totalImages:", this.totalImages);
                 });
 
-                // console.log("self.images.length + 3:", self.images.length + 3);
+                axios.get("/get-more-images/" + lastId).then(function(resp) {
+                    self.images.push.apply(self.images, resp.data);
+                    // console.log("self.images:", self.images);
+                    // console.log("self.images.length:", self.images.length); // console logs the array to view length as you put pictures into the id when you hit the more button
 
-                // (Added + 3 since when the page mounts, 3 images are already on the page but not in the array)
-
-                if (self.images.length + 3 === self.totalImages) {
-                    self.morePics = false;
-                }
+                    // makes button disappear when you load all the images from the database
+                    if (self.images.length === self.totalImages) {
+                        self.morePics = false;
+                    }
+                });
             },
 
             toggleComponent: function(e) {
