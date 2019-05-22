@@ -1,3 +1,4 @@
+//Putting all of our code in an IFFE to prevent our variables to become global.
 // DO NOT USE ARROW FUNCTIONS
 (function() {
     Vue.component("some-component", {
@@ -15,7 +16,7 @@
                 },
                 comments: []
             };
-        },
+        }, //data ends (comma is very important!)
 
         watch: {
             imageId: function() {
@@ -32,10 +33,12 @@
                     });
             }
         },
-
+        //mounted is called a 'lifecycle method'
         mounted: function() {
-            let self = this;
-
+            //Where we make AXIOS requests to get data from the server that we want to render onscreen when user visits site
+            let self = this; //this refers to the vue instance
+            //RESP is the response from the server
+            //data is the property of RESP that contains the info we requested from the server
             axios
                 .get("/get-image-info/" + this.imageId)
                 .then(function(resp) {
@@ -83,7 +86,9 @@
         }
     });
 
+    //majority of our Vue code will go in this obj.
     new Vue({
+        //refers to element in index.html with id: main to connect to
         el: "#main",
         data: {
             showUp: "",
@@ -99,6 +104,7 @@
             totalImages: ""
         },
         mounted: function() {
+            //this refers to the vue instance
             var self = this;
 
             window.addEventListener("hashchange", function() {

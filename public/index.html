@@ -6,11 +6,9 @@
     <link rel="stylesheet" href="/styles.css">
     <link href="https://fonts.googleapis.com/css?family=Lancelot" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
-
 </head>
 
 <body>
-
     <!-- INTRO PAGE -->
     <div id='intro-page'>
         <transition name="fade" v-if="show">
@@ -25,7 +23,7 @@
         </transition>
     </div>
 
-    <!-- MAIN ELEMENT STARTS -->
+    <!-- MAIN ELEMENT STARTS - HAS ACCESS TO VUE LOGIC IN SCRIPT.JS -->
     <div id="main">
         <header>
             <p id="title"> IMAGE | BOARD </p>
@@ -95,6 +93,7 @@
         </div>
     </script>
 
+    <!-- Linking Vue, Axios, and JS files -->
     <script src="/js/vue.js"></script>
     <script src="/js/axios.min.js"></script>
     <script src="/js/script.js"></script>
