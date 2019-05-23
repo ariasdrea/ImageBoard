@@ -60,8 +60,8 @@ app.get("/getAllImages", (req, res) => {
         });
 });
 
-//middleware function (uploader.single('file')) will run and upload file to 'uploads' directory
-//s3.upload - is for uploading the file to the cloud
+//middleware function (uploader.single('file')) uploads to 'uploads' directory (HD)
+//s3.upload - is for uploading the file to AWS
 app.post("/upload", uploader.single("file"), s3.upload, function(req, res) {
     let title = req.body.title;
     let description = req.body.description;
