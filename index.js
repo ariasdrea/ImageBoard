@@ -2,9 +2,11 @@ const express = require("express");
 const app = express();
 const ca = require("chalk-animation");
 const db = require("./db");
+///// Configurartion for image upload /////
 const multer = require("multer");
 const uidSafe = require("uid-safe");
 const path = require("path");
+//////////////////////////////////////////
 const config = require("./config.json");
 const s3 = require("./s3");
 
@@ -13,7 +15,7 @@ app.use(bodyParser.json());
 
 app.disable("x-powered-by");
 
-// FILE UPLOAD BOILERPLATE//
+////////// FILE UPLOAD BOILERPLATE //////////
 var diskStorage = multer.diskStorage({
     destination: function(req, file, callback) {
         callback(null, __dirname + "/uploads");
@@ -31,6 +33,7 @@ var uploader = multer({
         fileSize: 2097152
     }
 });
+//////////////////////////////////////////
 
 app.use(express.static("./public"));
 app.use(express.static("./uploads"));
@@ -57,6 +60,8 @@ app.get("/getAllImages", (req, res) => {
         });
 });
 
+//middleware function (uploader.single('file')) will run and upload file to 'uploads' directory
+//s3.upload - is for uploading the file to the cloud
 app.post("/upload", uploader.single("file"), s3.upload, function(req, res) {
     let title = req.body.title;
     let description = req.body.description;
@@ -65,6 +70,7 @@ app.post("/upload", uploader.single("file"), s3.upload, function(req, res) {
     let url = req.file.filename;
     let fullUrl = config.s3Url + url;
 
+    console.log("req.file in POST/upload:", req.file);
     if (file) {
         db.uploadImage(fullUrl, username, title, description)
             .then(function(result) {

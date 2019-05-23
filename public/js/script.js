@@ -95,6 +95,7 @@
             images: [],
             morePics: true,
             imageId: location.hash.slice(1) || 0,
+            // where the input field data will be held.
             form: {
                 title: "",
                 description: "",
@@ -102,7 +103,8 @@
                 file: null
             },
             totalImages: ""
-        },
+        }, //data ends
+
         mounted: function() {
             //this refers to the vue instance
             var self = this;
@@ -115,11 +117,12 @@
                 // console.log("resp.data in get images:", resp.data);
                 var imagesFromServer = resp.data.rows;
                 self.images = imagesFromServer;
-                console.log("self.images in mounted:", self.images);
+                // console.log("self.images in mounted:", self.images);
             });
-        },
+        }, //mounted ends
 
         methods: {
+            //every single function that runs in response to an even is written here
             show: function() {
                 if (this.showUp == "appear") {
                     this.showUp = "";
@@ -160,20 +163,25 @@
                 this.imageId = false;
             },
 
+            //runs every time you select a file and click open
             handleFileChange: function(e) {
                 this.form.file = e.target.files[0];
             },
 
             uploadFile: function(e) {
+                //the default behavior of the button is to submit and therefore, the page refreshes - need to preventdefault (don't make post request when you click it!)
                 e.preventDefault();
-                var self = this;
-
+                var self = this; //is this needed?!!!!!
+                //need to use FormData API to process the file
+                //We need to add all the file's info to formData by appending it to the variable (.append is specific to formData - needs to be passed a key:value pair)
                 var formData = new FormData();
                 formData.append("title", this.form.title);
                 formData.append("description", this.form.description);
                 formData.append("username", this.form.username);
                 formData.append("file", this.form.file);
+                //if you console.log formData, it will show an empty object.
 
+                //This makes a POST request to our server. 1st arg is route, 2nd arg is the data we're sending as part of the request
                 axios
                     .post("/upload", formData)
                     .then(function(resp) {
@@ -183,7 +191,7 @@
                     .catch(function(err) {
                         return err;
                     });
-            }
-        }
+            } //uploadFile ends
+        } //mounted ends
     });
 })();
