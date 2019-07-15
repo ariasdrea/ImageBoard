@@ -10,23 +10,23 @@
 
 <body>
     <!-- INTRO PAGE -->
-    <div id='intro-page'>
+    <!-- <div id='intro-page'>
         <transition name="fade" v-if="show">
             <div id='intro'>
                 <div id="intro-info">
-                    <p id="intro-name">IMAGE | BOARD</p>
+                    <p id="intro-name">IMAGE | DOOR</p>
                     <div id='intro-button-div'>
                         <button id="enter-button" v-on:click="show = !show">enter</button>
                     </div>
                 </div>
             </div>
         </transition>
-    </div>
+    </div> -->
 
     <!-- MAIN ELEMENT STARTS - HAS ACCESS TO VUE LOGIC IN SCRIPT.JS -->
     <div id="main">
         <header>
-            <p id="title"> IMAGE | BOARD </p>
+            <p id="title"> IMAGE | DOOR </p>
         </header>
 
         <hr id='hr-in-form'>
@@ -47,13 +47,13 @@
         <!--  IMAGES AND TITLE -->
         <div class='all-images'>
             <div class="image-div" v-for='item in images' @click="toggleComponent">
-
                 <a :href=" '#' + item.id">
                     <img :src="item.url" :id="item.id">
                     <div id="item-text">
                         <p id="image-title">{{ item.title }}</p>
                     </div>
                 </a>
+                <p class='delete-image' @click='deleteImage'>x</p>
             </div>
         </div>
 
@@ -62,22 +62,24 @@
             <button id='more-button' @click='getMoreImages' v-if='morePics'>More</button>
         </div>
 
+        <!-- This renders the modal on the page. CSS makes it look like an actual modal -->
+        <image-modal :image-id='imageId' v-if='imageId' @close-component='closingTheComponent'>
+        </image-modal>
         <!--orange is component, green is vue instance  -->
-        <some-component :image-id='imageId' v-if='imageId' @close-component='closingTheComponent'>
-        </some-component>
 
     </div>
+    <!-- main div ends  -->
 
-
+    <!-- Logic of Vue component must be after #main div (Vue instance). Must have an ID property (w/e we want it to be) and a specific type attribute -->
     <script id="my-template" type="text/x-template">
         <div id='overlay'>
             <div id='modal'>
-                <h1 id='text-in-modal'>{{ title }}</h1>
+                <h1 id='text-in-modal'>{{ title }} </h1>
                 <img id="img-in-modal" :src='url' @click = 'closeComponent'>
                 <p id='text-in-modal'>description: {{ description }}</p>
                 <p id='text-in-modal'>uploaded by {{ username }}</p>
 
-                <!-- COMMENTS -->
+                <!-- COMMENTS MODAL -->
                 <form>
                     <hr id="hr-in-modal">
                     <p>Comment
@@ -86,9 +88,10 @@
                     <p>Username
                         <input v-model="form.modalUser" type="text" placeholder="username" name="modalUser">
                     </p>
+                    <!--Submit Comment  -->
                     <button class='submit-in-modal' @click = 'insertComment'>Submit</button>
                 </form>
-
+                <!-- RENDERS COMMENTS IN HTML -->
                 <div id="commentsInModal" v-for = "each in comments">
                     <p id='comment-in-modal'>{{ each.comment }} | posted by {{ each.modaluser}}</p>
                 </div>

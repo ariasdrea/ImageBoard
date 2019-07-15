@@ -17,6 +17,20 @@ form {
     margin: 0 auto;
     border: 2px solid white;
     position: relative;
+    display: flex
+}
+
+.delete-image {
+    align-self: flex-start;
+    position: relative;
+    right: 20px;
+    bottom: 10px;
+    font-size: 18px;
+}
+
+.delete-image:hover {
+    cursor: pointer;
+    font-weight: bold;
 }
 
 img {
@@ -36,7 +50,8 @@ img {
     bottom: 5px;
     background-color: black;
     opacity: 0.6;
-    width: 100%;
+    width: 98%;
+    /* 99% accounts for the 5px of the x for deleting an img */
 }
 
 #image-title {

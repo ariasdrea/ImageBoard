@@ -1,10 +1,11 @@
 //Putting all of our code in an IFFE to prevent our variables to become global.
 // DO NOT USE ARROW FUNCTIONS
 (function() {
-    Vue.component("some-component", {
+    Vue.component("image-modal", {
         template: "#my-template",
-        props: ["imageId"],
+        props: ["imageId"], //props has the property of Vue instance data we want this component to have access to.
         data: function() {
+            //data in a component is a function that returns an obj. the function will ensure that the each instance of the component will have their own data object and not share it.
             return {
                 title: "",
                 description: "",
@@ -16,7 +17,7 @@
                 },
                 comments: []
             };
-        }, //data ends (comma is very important!)
+        },
 
         watch: {
             imageId: function() {
@@ -33,15 +34,14 @@
                     });
             }
         },
-        //mounted is called a 'lifecycle method'
+        //mounted is a 'lifecycle method' and functions within runs when page loads
         mounted: function() {
-            //Where we make AXIOS requests to get data from the server that we want to render onscreen when user visits site
-            let self = this; //this refers to the vue instance
-            //RESP is the response from the server
-            //data is the property of RESP that contains the info we requested from the server
+            let self = this;
             axios
                 .get("/get-image-info/" + this.imageId)
                 .then(function(resp) {
+                    //resp is the response from server
+                    //data is the property of RESP that contains the info we requested from server
                     self.title = resp.data[0].title;
                     self.description = resp.data[0].description;
                     self.url = resp.data[0].url;
@@ -73,7 +73,7 @@
                         self.comments.unshift(resp.data.rows[0]);
                     })
                     .catch(function(err) {
-                        console.log("error when submitting comments:", err);
+                        console.log("error in method insertComment:", err);
                     });
             }
         }
@@ -95,17 +95,18 @@
             images: [],
             morePics: true,
             imageId: location.hash.slice(1) || 0,
-            // where the input field data will be held.
             form: {
+                // where the input field data will be held.
                 title: "",
                 description: "",
                 username: "",
                 file: null
             },
             totalImages: ""
-        }, //data ends
+        }, // data ends (comma is very important!)
 
         mounted: function() {
+            //We make AXIOS requests in 'mounted' to get data from the server that we want to show onscreen when user visits site
             //this refers to the vue instance
             var self = this;
 
@@ -122,7 +123,7 @@
         }, //mounted ends
 
         methods: {
-            //every single function that runs in response to an even is written here
+            //every single function that runs in response to an event is written here
             show: function() {
                 if (this.showUp == "appear") {
                     this.showUp = "";
@@ -135,7 +136,7 @@
                 var self = this;
                 var lastId = this.images[this.images.length - 1].id;
 
-                //Get all images from the database and access the property rowCount to get the total # of images in db.
+                //Get all images from the db and access the property rowCount to get the total # of images.
                 axios.get("/getAllImages").then(function(resp) {
                     var totalImagesInDb = resp.data.rowCount;
                     self.totalImages = totalImagesInDb;
@@ -144,7 +145,7 @@
 
                 axios.get("/get-more-images/" + lastId).then(function(resp) {
                     self.images.push.apply(self.images, resp.data);
-                    // console.log("self.images:", self.images);
+                    console.log("self.images:", self.images);
                     // console.log("self.images.length:", self.images.length); // console logs the array to view length as you put pictures into the id when you hit the more button
 
                     // makes button disappear when you load all the images from the database
@@ -173,7 +174,7 @@
                 e.preventDefault();
                 var self = this; //is this needed?!!!!!
                 //need to use FormData API to process the file
-                //We need to add all the file's info to formData by appending it to the variable (.append is specific to formData - needs to be passed a key:value pair)
+                //We need to add all the file's info to formData by appending it to the variable
                 var formData = new FormData();
                 formData.append("title", this.form.title);
                 formData.append("description", this.form.description);
@@ -185,13 +186,22 @@
                 axios
                     .post("/upload", formData)
                     .then(function(resp) {
+                        console.log(
+                            "resp.data[0] in post upload",
+                            resp.data[0]
+                        );
                         var uploadedImage = resp.data[0];
                         self.images.unshift(uploadedImage);
                     })
                     .catch(function(err) {
                         return err;
                     });
-            } //uploadFile ends
+            }, //uploadFile ends
+
+            deleteImage: function(e) {
+                console.log("e.target:", e.target.id);
+                // axios.get("/get-image-info" + this.imageId);
+            }
         } //mounted ends
     });
 })();

@@ -41,7 +41,7 @@ app.use(express.static("./uploads"));
 app.get("/images", (req, res) => {
     db.getImages() //queried the database to get images but limit them to 3
         .then(results => {
-            console.log("results in get images:", results);
+            // console.log("results in get images:", results);
             res.json(results);
         })
         .catch(err => {
@@ -52,7 +52,7 @@ app.get("/images", (req, res) => {
 app.get("/getAllImages", (req, res) => {
     db.getAllImages() //queried the database to get all images
         .then(results => {
-            console.log("results in get images:", results);
+            // console.log("results in get images:", results);
             res.json(results);
         })
         .catch(err => {
@@ -107,6 +107,7 @@ app.get("/get-comments/:id", (req, res) => {
 });
 
 app.post("/insert-comment/:id", (req, res) => {
+    //if req.body evaluates to {}, check body parser
     let comment = req.body.comment;
     let modalUser = req.body.modalUser;
     let id = req.params.id;
@@ -126,6 +127,10 @@ app.get("/get-more-images/:id", (req, res) => {
     db.getMoreImages(lastId).then(images => {
         res.json(images);
     });
+});
+
+app.post("/deleteImage/:id", (req, res) => {
+    console.log("req.params.id", req.params.id);
 });
 
 app.listen(8080, () => ca.rainbow("listening!"));

@@ -73,3 +73,19 @@ exports.insertComment = (comment, modalUser, images_id) => {
         [comment, modalUser, images_id]
     );
 };
+
+exports.deleteImage = id => {
+    let deleteFromImages = db.query(
+        `DELETE FROM images
+        WHERE id = $1`,
+        [id]
+    );
+    let deleteFromComments = db.query(
+        `DELETE from comments
+        WHERE images_id = images(id)`
+    );
+
+    Promise.all([deleteFromImages, deleteFromComments]).then(function() {
+        console.log("promises resolved");
+    });
+};
