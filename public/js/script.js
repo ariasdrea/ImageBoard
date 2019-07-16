@@ -107,7 +107,7 @@
 
         mounted: function() {
             //We make AXIOS requests in 'mounted' to get data from the server that we want to show onscreen when user visits site
-            //this refers to the vue instance
+            //assigning 'this' to self so that its meaning remains throughout nested fn
             var self = this;
 
             window.addEventListener("hashchange", function() {
@@ -120,6 +120,7 @@
                 self.images = imagesFromServer;
                 // console.log("self.images in mounted:", self.images);
             });
+
         }, //mounted ends
 
         methods: {
@@ -199,7 +200,7 @@
             }, //uploadFile ends
 
             deleteImage: function(e) {
-                console.log("e.target:", e.target.id);
+                console.log("e:", e);
                 // axios.get("/get-image-info" + this.imageId);
             }
         } //mounted ends

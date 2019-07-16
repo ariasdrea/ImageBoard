@@ -15,7 +15,7 @@ app.use(bodyParser.json());
 
 app.disable("x-powered-by");
 
-////////// FILE UPLOAD BOILERPLATE //////////
+////////// FILE UPLOAD BOILERPLATE ////////
 var diskStorage = multer.diskStorage({
     destination: function(req, file, callback) {
         callback(null, __dirname + "/uploads");
@@ -45,7 +45,7 @@ app.get("/images", (req, res) => {
             res.json(results);
         })
         .catch(err => {
-            console.log("ERR in GET - IMAGES:", err);
+            console.log("ERR in GET - images:", err);
         });
 });
 
@@ -56,13 +56,13 @@ app.get("/getAllImages", (req, res) => {
             res.json(results);
         })
         .catch(err => {
-            console.log("ERR in GET - IMAGES:", err);
+            console.log("ERR in GET - getAllImages:", err);
         });
 });
 
 //middleware function (uploader.single('file')) uploads to 'uploads' directory (HD)
 //s3.upload - is for uploading the file to AWS
-app.post("/upload", uploader.single("file"), s3.upload, function(req, res) {
+app.post("/upload", uploader.single("file"), s3.upload, (req, res) => {
     let title = req.body.title;
     let description = req.body.description;
     let username = req.body.username;
@@ -70,13 +70,13 @@ app.post("/upload", uploader.single("file"), s3.upload, function(req, res) {
     let url = req.file.filename;
     let fullUrl = config.s3Url + url;
 
-    console.log("req.file in POST/upload:", req.file);
+    // console.log("req.file in POST/upload:", req.file);
     if (file) {
         db.uploadImage(fullUrl, username, title, description)
-            .then(function(result) {
+            .then(result => {
                 res.json(result.rows);
             })
-            .catch(function(err) {
+            .catch(err => {
                 console.log("error in uploadimage:", err);
             });
     } else {
@@ -116,7 +116,7 @@ app.post("/insert-comment/:id", (req, res) => {
         .then(result => {
             res.json(result);
         })
-        .catch(function(err) {
+        .catch(err => {
             console.log("ERR IN POST -INSERT/COMMENT:", err);
         });
 });
@@ -129,8 +129,8 @@ app.get("/get-more-images/:id", (req, res) => {
     });
 });
 
-app.post("/deleteImage/:id", (req, res) => {
-    console.log("req.params.id", req.params.id);
-});
+// app.post("/deleteImage/:id", (req, res) => {
+//     console.log("req.params.id", req.params.id);
+// });
 
-app.listen(8080, () => ca.rainbow("listening!"));
+app.listen(8080, () => ca.rainbow("8080 listening!"));

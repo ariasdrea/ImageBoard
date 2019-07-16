@@ -24,6 +24,7 @@
     </div> -->
 
     <!-- MAIN ELEMENT STARTS - HAS ACCESS TO VUE LOGIC IN SCRIPT.JS -->
+    <!-- elements inside of main will have access to vue -->
     <div id="main">
         <header>
             <p id="title"> IMAGE | DOOR </p>
@@ -53,7 +54,7 @@
                         <p id="image-title">{{ item.title }}</p>
                     </div>
                 </a>
-                <p class='delete-image' @click='deleteImage'>x</p>
+                <!-- <button class='delete-image'>x</button> -->
             </div>
         </div>
 
