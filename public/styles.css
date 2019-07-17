@@ -39,7 +39,7 @@ img {
     object-fit: cover;
 }
 
-#hr-in-form {
+.hr-in-form {
     width: 70%;
     margin-bottom: 40px;
     border: 0.5px solid black;
@@ -50,8 +50,7 @@ img {
     bottom: 5px;
     background-color: black;
     opacity: 0.6;
-    width: 98%;
-    /* 99% accounts for the 5px of the x for deleting an img */
+    width: 100%;
 }
 
 #image-title {
@@ -141,8 +140,8 @@ header {
 #title {
     display: inline-block;
     position: relative;
-    font-weight: bold;
-    font-size: 35px;
+    font-weight: lighter;
+    font-size: 45px;
     letter-spacing: 2px;
 }
 
@@ -185,16 +184,28 @@ form {
     margin-bottom: 15px;
 }
 
-#commentsInModal {
+#comment-container {
+    height: 150px;
+    overflow-y: scroll;
+    border: .5px solid grey;
+    margin: 0 auto;
+    margin-bottom: 20px;
+    padding-top: 15px;
+    width: 80%;
+}
+
+#comments-in-modal {
     display: flex;
 }
 
-#comment-in-modal {
+#each-comment {
     display: inline-block;
     width: 80%;
     text-align: center;
     margin: 0 auto;
     margin-bottom: 10px;
+    font-size: 13px;
+    color: grey;
 }
 
 #modaluser-in-comment {

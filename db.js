@@ -47,7 +47,9 @@ exports.getComments = id => {
         WHERE images_id = $1
         `,
         [id]
-    );
+    ).then(results => {
+        return results.rows;
+    });
 };
 
 exports.getMoreImages = lastId => {
@@ -71,21 +73,22 @@ exports.insertComment = (comment, modalUser, images_id) => {
         VALUES ($1, $2, $3)
         RETURNING *`,
         [comment, modalUser, images_id]
-    );
+    ).then(result => {
+        return result.rows[0];
+    });
 };
 
 exports.deleteImage = id => {
-    let deleteFromImages = db.query(
+    return db.query(
         `DELETE FROM images
         WHERE id = $1`,
         [id]
     );
-    let deleteFromComments = db.query(
-        `DELETE from comments
-        WHERE images_id = images(id)`
-    );
+};
 
-    Promise.all([deleteFromImages, deleteFromComments]).then(function() {
-        console.log("promises resolved");
-    });
+exports.deleteComments = () => {
+    return db.query(
+        `DELETE FROM comments
+        WHERE images.id = comments.images_id`
+    );
 };

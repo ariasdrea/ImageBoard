@@ -1,11 +1,10 @@
-//Putting all of our code in an IFFE to prevent our variables to become global.
 // DO NOT USE ARROW FUNCTIONS
 (function() {
     Vue.component("image-modal", {
         template: "#my-template",
         props: ["imageId"], //props has the property of Vue instance data we want this component to have access to.
         data: function() {
-            //data in a component is a function that returns an obj. the function will ensure that the each instance of the component will have their own data object and not share it.
+            //data in a component is a fn that returns an obj. the fn will ensure that the each instance of the component will have their own data object and not share it.
             return {
                 title: "",
                 description: "",
@@ -21,7 +20,7 @@
 
         watch: {
             imageId: function() {
-                console.log("this.imageId:", this.imageId);
+                // console.log("this.imageId:", this.imageId);
                 var self = this;
                 axios
                     .get("/get-image-info/" + this.imageId)
@@ -51,6 +50,7 @@
                     axios
                         .get("/get-comments/" + self.imageId)
                         .then(function(resp) {
+                            console.log('resp.data:', resp.data);
                             self.comments = resp.data;
                         });
                 })
@@ -70,11 +70,21 @@
                 axios
                     .post("/insert-comment/" + this.imageId, self.form)
                     .then(function(resp) {
-                        self.comments.unshift(resp.data.rows[0]);
+                        self.comments.unshift(resp.data);
                     })
                     .catch(function(err) {
                         console.log("error in method insertComment:", err);
                     });
+            },
+
+            deleteImage: function(e) {
+                e.preventDefault();
+                console.log('delete button in modal clicked!');
+                console.log('this.imageId: ', this.imageId);
+                // let self = this;
+                axios.post('/delete-image/' + this.imageId).then(function(resp) {
+                    console.log('resp from post /delete-image', resp);
+                });
             }
         }
     });
@@ -119,6 +129,10 @@
                 var imagesFromServer = resp.data.rows;
                 self.images = imagesFromServer;
                 // console.log("self.images in mounted:", self.images);
+
+                if(!self.images.length) {
+                    self.morePics = false;
+                }
             });
 
         }, //mounted ends
@@ -146,7 +160,7 @@
 
                 axios.get("/get-more-images/" + lastId).then(function(resp) {
                     self.images.push.apply(self.images, resp.data);
-                    console.log("self.images:", self.images);
+                    // console.log("self.images:", self.images);
                     // console.log("self.images.length:", self.images.length); // console logs the array to view length as you put pictures into the id when you hit the more button
 
                     // makes button disappear when you load all the images from the database
@@ -157,8 +171,8 @@
             },
 
             toggleComponent: function(e) {
-                var idOfImageThatWasClicked = e.target.id;
-                this.imageId = idOfImageThatWasClicked;
+                var idOfClickedImg = e.target.id;
+                this.imageId = idOfClickedImg;
             },
 
             closingTheComponent: function() {
@@ -171,11 +185,11 @@
             },
 
             uploadFile: function(e) {
-                //the default behavior of the button is to submit and therefore, the page refreshes - need to preventdefault (don't make post request when you click it!)
+                //the default behavior of the button is to submit and therefore, the page refreshes - need to preventdefault.
                 e.preventDefault();
-                var self = this; //is this needed?!!!!!
-                //need to use FormData API to process the file
-                //We need to add all the file's info to formData by appending it to the variable
+                var self = this;
+                //need to use FormData API to handle the file & add all of the
+                //file's info to formData by appending it to the variable
                 var formData = new FormData();
                 formData.append("title", this.form.title);
                 formData.append("description", this.form.description);
@@ -187,10 +201,10 @@
                 axios
                     .post("/upload", formData)
                     .then(function(resp) {
-                        console.log(
-                            "resp.data[0] in post upload",
-                            resp.data[0]
-                        );
+                        // console.log(
+                        //     "resp.data[0] in post upload",
+                        //     resp.data[0]
+                        // );
                         var uploadedImage = resp.data[0];
                         self.images.unshift(uploadedImage);
                     })
@@ -198,11 +212,6 @@
                         return err;
                     });
             }, //uploadFile ends
-
-            deleteImage: function(e) {
-                console.log("e:", e);
-                // axios.get("/get-image-info" + this.imageId);
-            }
         } //mounted ends
     });
 })();

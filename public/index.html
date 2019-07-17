@@ -24,13 +24,12 @@
     </div> -->
 
     <!-- MAIN ELEMENT STARTS - HAS ACCESS TO VUE LOGIC IN SCRIPT.JS -->
-    <!-- elements inside of main will have access to vue -->
     <div id="main">
         <header>
             <p id="title"> IMAGE | DOOR </p>
         </header>
 
-        <hr id='hr-in-form'>
+        <hr class='hr-in-form'>
 
         <!-- FORM - INPUT FIELDS -->
         <form>
@@ -43,7 +42,7 @@
             <button class='upload-button' @click='uploadFile'>Upload</button>
         </form>
 
-        <hr id='hr-in-form'>
+        <hr class='hr-in-form'>
 
         <!--  IMAGES AND TITLE -->
         <div class='all-images'>
@@ -54,7 +53,6 @@
                         <p id="image-title">{{ item.title }}</p>
                     </div>
                 </a>
-                <!-- <button class='delete-image'>x</button> -->
             </div>
         </div>
 
@@ -71,7 +69,7 @@
     </div>
     <!-- main div ends  -->
 
-    <!-- Logic of Vue component must be after #main div (Vue instance). Must have an ID property (w/e we want it to be) and a specific type attribute -->
+    <!-- Logic of Vue component must be after #main div (Vue instance). Must have an ID property and a specific type attribute -->
     <script id="my-template" type="text/x-template">
         <div id='overlay'>
             <div id='modal'>
@@ -90,11 +88,15 @@
                         <input v-model="form.modalUser" type="text" placeholder="username" name="modalUser">
                     </p>
                     <!--Submit Comment  -->
-                    <button class='submit-in-modal' @click = 'insertComment'>Submit</button>
+                    <button class='submit-in-modal' @click='insertComment'>Submit</button>
+                    <button class='delete-in-modal' @click='deleteImage'>Delete</button>
+
                 </form>
                 <!-- RENDERS COMMENTS IN HTML -->
-                <div id="commentsInModal" v-for = "each in comments">
-                    <p id='comment-in-modal'>{{ each.comment }} | posted by {{ each.modaluser}}</p>
+                <div id='comment-container'>
+                    <div id="comments-in-modal" v-for = "each in comments">
+                        <p id='each-comment'>{{ each.comment }} | posted by {{ each.modaluser}} on {{each.added}}</p>
+                    </div>
                 </div>
             </div>
         </div>

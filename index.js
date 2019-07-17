@@ -9,6 +9,7 @@ const path = require("path");
 //////////////////////////////////////////
 const config = require("./config.json");
 const s3 = require("./s3");
+const moment = require('moment');
 
 const bodyParser = require("body-parser");
 app.use(bodyParser.json());
@@ -100,9 +101,11 @@ app.get("/get-image-info/:id", (req, res) => {
 
 app.get("/get-comments/:id", (req, res) => {
     let id = req.params.id;
-
     db.getComments(id).then(result => {
-        res.json(result.rows);
+        result.forEach(comment => {
+            comment.added = moment(comment.added).format("MMM Do YY");
+        });
+        res.json(result);
     });
 });
 
@@ -114,6 +117,7 @@ app.post("/insert-comment/:id", (req, res) => {
 
     db.insertComment(comment, modalUser, id)
         .then(result => {
+            result.added = moment(comment.added).format("MMM Do YY");
             res.json(result);
         })
         .catch(err => {
@@ -129,8 +133,10 @@ app.get("/get-more-images/:id", (req, res) => {
     });
 });
 
-// app.post("/deleteImage/:id", (req, res) => {
-//     console.log("req.params.id", req.params.id);
+// app.post('/delete-image/:id', (req, res) => {
+//     db.deleteImage(req.params.id).then().catch(err => {
+//         console.log('err in post delete-image: ', err);
+//     });
 // });
 
 app.listen(8080, () => ca.rainbow("8080 listening!"));

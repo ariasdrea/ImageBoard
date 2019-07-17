@@ -33,5 +33,5 @@ exports.upload = (req, res, next) => {
     }).catch(err => {
         console.log('err in s3 promise catch', err);
         res.sendStatus(500);
-    });
+    }).then(() => fs.unlink(path, () => {}));
 };
