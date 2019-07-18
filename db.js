@@ -32,13 +32,34 @@ exports.uploadImage = (url, username, title, description) => {
     );
 };
 
+// gets info for single picture
+// exports.getImageInfo = id => {
+//     return db.query(
+//         `SELECT *
+//         FROM images WHERE id = $1`,
+//         [id]
+//     );
+// };
+
+
+// subquery that gets info for selected, next, and prev picture
 exports.getImageInfo = id => {
     return db.query(
-        `SELECT *
-        FROM images WHERE id = $1`,
+        `SELECT *, (
+            SELECT min(id) FROM images
+            WHERE id > $1
+        ) AS "nextId", (
+            SELECT max(id) FROM images
+            WHERE id < $1
+        ) AS "prevId"
+        FROM images
+        WHERE id = $1`,
         [id]
-    );
+    ).then(results => {
+        return results.rows;
+    });
 };
+
 
 exports.getComments = id => {
     return db.query(
