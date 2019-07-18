@@ -90,7 +90,7 @@ app.post("/upload", uploader.single("file"), s3.upload, (req, res) => {
 app.get("/get-image-info/:id", (req, res) => {
     db.getImageInfo(req.params.id)
         .then(result => {
-            res.json(result.rows);
+            res.json(result);
         })
         .catch(err => {
             console.log("ERR IN GET-IMAGE INFO:", err);

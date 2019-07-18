@@ -14,7 +14,10 @@
                     comment: "",
                     modalUser: ""
                 },
-                comments: []
+                comments: [],
+                exists: true,
+                prevId: null,
+                nextId: null
             };
         },
 
@@ -25,33 +28,53 @@
                 axios
                     .get("/get-image-info/" + this.imageId)
                     .then(function(resp) {
-                        console.log("resp:", resp);
                         self.title = resp.data[0].title;
                         self.description = resp.data[0].description;
                         self.url = resp.data[0].url;
                         self.username = resp.data[0].username;
+                        self.nextId = resp.data[0].nextId;
+                        self.prevId = resp.data[0].prevId;
+                    }).then(function() {
+                        axios
+                            .get("/get-comments/" + self.imageId)
+                            .then(function(resp) {
+                                console.log('resp in watch comments: ', resp.data);
+                                self.comments = resp.data;
+
+                                console.log('self.comments.length:', self.comments.length);
+
+                                if(self.comments.length === 0) {
+                                    self.exists = false;
+                                } else {
+                                    self.exists = true;
+                                }
+                            });
                     });
             }
         },
-        //mounted is a 'lifecycle method' and functions within runs when page loads
+
         mounted: function() {
             let self = this;
             axios
                 .get("/get-image-info/" + this.imageId)
                 .then(function(resp) {
-                    //resp is the response from server
-                    //data is the property of RESP that contains the info we requested from server
+                    // console.log('resp.data: ', resp.data);
                     self.title = resp.data[0].title;
                     self.description = resp.data[0].description;
                     self.url = resp.data[0].url;
                     self.username = resp.data[0].username;
+                    self.prevId = resp.data[0].prevId;
+                    self.nextId = resp.data[0].nextId;
                 })
                 .then(function() {
                     axios
                         .get("/get-comments/" + self.imageId)
                         .then(function(resp) {
-                            // console.log('resp.data:', resp.data);
                             self.comments = resp.data;
+
+                            if(!self.comments.length) {
+                                self.exists = false;
+                            }
                         });
                 })
                 .catch(function(err) {
@@ -69,8 +92,11 @@
                 let self = this;
                 axios
                     .post("/insert-comment/" + this.imageId, self.form)
-                    .then(function(resp) {
-                        self.comments.unshift(resp.data);
+                    .then(function(resp) {                        self.comments.unshift(resp.data);
+
+                        if (self.comments) {
+                            self.exists = true;
+                        }
                     })
                     .catch(function(err) {
                         console.log("error in method insertComment:", err);
@@ -81,7 +107,6 @@
                 e.preventDefault();
                 console.log('delete button in modal clicked!');
                 console.log('this.imageId: ', this.imageId);
-                // let self = this;
                 axios.post('/delete-image/' + this.imageId).then(function(resp) {
                     console.log('resp from post /delete-image', resp);
                 });
@@ -170,13 +195,15 @@
                 });
             },
 
-            toggleComponent: function(e) {
-                var idOfClickedImg = e.target.id;
-                this.imageId = idOfClickedImg;
-            },
+            // toggleComponent: function(e) {
+            //     var idOfClickedImg = e.target.id;
+            //     this.imageId = idOfClickedImg;
+            // },
 
             closingTheComponent: function() {
-                this.imageId = false;
+                this.imageId = null;
+                //removes hash and id from url
+                // location.hash = "";
                 history.replaceState(null, null, ' ');
             },
 
