@@ -40,7 +40,7 @@ app.use(express.static("./public"));
 app.use(express.static("./uploads"));
 
 app.get("/images", (req, res) => {
-    db.getImages() //queried the database to get images but limit them to 3
+    db.getImages() //gets 3 images
         .then(results => {
             // console.log("results in get images:", results);
             res.json(results);
@@ -51,7 +51,7 @@ app.get("/images", (req, res) => {
 });
 
 app.get("/getAllImages", (req, res) => {
-    db.getAllImages() //queried the database to get all images
+    db.getAllImages() //gets all images
         .then(results => {
             // console.log("results in get images:", results);
             res.json(results);
@@ -88,9 +88,7 @@ app.post("/upload", uploader.single("file"), s3.upload, (req, res) => {
 });
 
 app.get("/get-image-info/:id", (req, res) => {
-    let id = req.params.id;
-
-    db.getImageInfo(id)
+    db.getImageInfo(req.params.id)
         .then(result => {
             res.json(result.rows);
         })
@@ -100,8 +98,7 @@ app.get("/get-image-info/:id", (req, res) => {
 });
 
 app.get("/get-comments/:id", (req, res) => {
-    let id = req.params.id;
-    db.getComments(id).then(result => {
+    db.getComments(req.params.id).then(result => {
         result.forEach(comment => {
             comment.added = moment(comment.added).format("MMM Do YY");
         });
@@ -126,9 +123,7 @@ app.post("/insert-comment/:id", (req, res) => {
 });
 
 app.get("/get-more-images/:id", (req, res) => {
-    var lastId = req.params.id;
-
-    db.getMoreImages(lastId).then(images => {
+    db.getMoreImages(req.params.id).then(images => {
         res.json(images);
     });
 });

@@ -50,7 +50,7 @@
                     axios
                         .get("/get-comments/" + self.imageId)
                         .then(function(resp) {
-                            console.log('resp.data:', resp.data);
+                            // console.log('resp.data:', resp.data);
                             self.comments = resp.data;
                         });
                 })
@@ -177,6 +177,7 @@
 
             closingTheComponent: function() {
                 this.imageId = false;
+                history.replaceState(null, null, ' ');
             },
 
             //runs every time you select a file and click open

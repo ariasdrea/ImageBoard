@@ -1,4 +1,5 @@
 * {
+    box-sizing: border-box;
     font-family: "Raleway", sans-serif;
     letter-spacing: 1px;
 }
@@ -153,24 +154,24 @@ form {
 /* MODAL */
 #modal {
     position: fixed;
+    overflow-y: scroll;
     z-index: 10;
     top: 50%;
     left: 50%;
-    width: 30%;
+    height: 85%;
+    width: 35%;
     transform: translate(-50%, -50%);
-    background-color: white;
-    transition: 2s ease;
     background-color: black;
     color: white;
-    padding-top: 20px;
+    padding-top: 15px;
 }
 
 #img-in-modal {
     margin: auto;
     cursor: pointer;
     display: block;
-    width: 300px;
-    height: 300px;
+    width: 60%;
+    height: 50%;
     object-fit: cover;
 }
 
@@ -185,7 +186,7 @@ form {
 }
 
 #comment-container {
-    height: 150px;
+    height: 30%;
     overflow-y: scroll;
     border: .5px solid grey;
     margin: 0 auto;
