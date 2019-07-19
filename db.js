@@ -99,17 +99,10 @@ exports.insertComment = (comment, modalUser, images_id) => {
     });
 };
 
-exports.deleteImage = id => {
+exports.deleteImageAndComments = id => {
     return db.query(
         `DELETE FROM images
         WHERE id = $1`,
         [id]
-    );
-};
-
-exports.deleteComments = () => {
-    return db.query(
-        `DELETE FROM comments
-        WHERE images.id = comments.images_id`
     );
 };
