@@ -38,12 +38,10 @@
                         axios
                             .get("/get-comments/" + self.imageId)
                             .then(function(resp) {
-                                console.log('resp in watch comments: ', resp.data);
+                                // console.log('resp in watch comments: ', resp.data);
                                 self.comments = resp.data;
-
-                                console.log('self.comments.length:', self.comments.length);
-
-                                if(self.comments.length === 0) {
+                                // console.log('self.comments.length:', self.comments.length);
+                                if (!self.comments.length) {
                                     self.exists = false;
                                 } else {
                                     self.exists = true;
@@ -78,7 +76,7 @@
                         });
                 })
                 .catch(function(err) {
-                    console.log("ERR IN AXIOS GETIMAGEINFO:", err);
+                    console.log("err in mounted axios:", err);
                 });
         },
 
@@ -92,23 +90,26 @@
                 let self = this;
                 axios
                     .post("/insert-comment/" + this.imageId, self.form)
-                    .then(function(resp) {                        self.comments.unshift(resp.data);
+                    .then(function(resp) {
+                        self.comments.unshift(resp.data);
 
                         if (self.comments) {
                             self.exists = true;
                         }
                     })
                     .catch(function(err) {
-                        console.log("error in method insertComment:", err);
+                        console.log("err in method insertComment:", err);
                     });
             },
 
             deleteImage: function(e) {
                 e.preventDefault();
-                console.log('delete button in modal clicked!');
-                console.log('this.imageId: ', this.imageId);
-                axios.post('/delete-image/' + this.imageId).then(function(resp) {
-                    console.log('resp from post /delete-image', resp);
+                let self = this;
+                axios.post('/delete-image/' + this.imageId).then(function() {
+                    history.replaceState(null, null, ' ');
+                    self.$emit("close-component");
+                }).catch(function(err) {
+                    console.log('err in method deleteImage: ', err);
                 });
             }
         }
@@ -121,7 +122,7 @@
         }
     });
 
-    //majority of our Vue code will go in this obj.
+    ////////////// VUE INSTANCE //////////////
     new Vue({
         //refers to element in index.html with id: main to connect to
         el: "#main",
@@ -151,8 +152,7 @@
 
             axios.get("/images").then(function(resp) {
                 // console.log("resp.data in get images:", resp.data);
-                var imagesFromServer = resp.data.rows;
-                self.images = imagesFromServer;
+                self.images = resp.data.rows;
                 // console.log("self.images in mounted:", self.images);
 
                 if(!self.images.length) {
@@ -202,9 +202,12 @@
 
             closingTheComponent: function() {
                 this.imageId = null;
-                //removes hash and id from url
-                // location.hash = "";
                 history.replaceState(null, null, ' ');
+
+                let self = this;
+                axios.get("/images").then(function(resp) {
+                    self.images = resp.data.rows;
+                });
             },
 
             //runs every time you select a file and click open
@@ -225,7 +228,7 @@
                 formData.append("file", this.form.file);
                 //if you console.log formData, it will show an empty object.
 
-                //This makes a POST request to our server. 1st arg is route, 2nd arg is the data we're sending as part of the request
+                //POST req to server - 2nd arg is the data we're sending as part of the request
                 axios
                     .post("/upload", formData)
                     .then(function(resp) {

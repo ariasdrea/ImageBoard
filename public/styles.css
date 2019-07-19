@@ -271,6 +271,14 @@ a {
     cursor: crosshair;
 }
 
+.delete-in-modal:hover {
+    background-color: black;
+    outline-color: red;
+    color: white;
+    font-weight: bold;
+    cursor: crosshair;
+}
+
 /* INPUT FIELD */
 input {
     border-radius: 900em;

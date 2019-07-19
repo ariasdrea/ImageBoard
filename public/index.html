@@ -33,7 +33,7 @@
 
         <!-- FORM - INPUT FIELDS -->
         <form>
-            <!-- v-model binds the value in this specific field to form.title  -->
+            <!-- v-model binds the value in this specific field to the data property -->
             <input v-model='form.title' type="text" placeholder="title" name="title">
             <input v-model='form.description' type="text" placeholder="description" name="description">
             <input v-model='form.username' type="text" placeholder="username" name="username">
@@ -96,8 +96,8 @@
                         <input v-model='form.modalUser' type='text' placeholder='username' name='modalUser'>
                     </p>
                     <!--Submit Comment  -->
-                    <button class='submit-in-modal' @click='insertComment'>Submit</button>
-                    <button class='delete-in-modal' @click='deleteImage'>Delete</button>
+                    <button class='submit-in-modal' @click='insertComment'>submit comment</button>
+                    <button class='delete-in-modal' @click='deleteImage'>delete picture</button>
 
                 </form>
                 <!-- RENDERS COMMENTS IN HTML -->

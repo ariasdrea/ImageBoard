@@ -128,10 +128,16 @@ app.get("/get-more-images/:id", (req, res) => {
     });
 });
 
-// app.post('/delete-image/:id', (req, res) => {
-//     db.deleteImage(req.params.id).then().catch(err => {
-//         console.log('err in post delete-image: ', err);
-//     });
-// });
+app.post('/delete-image/:id', (req, res) => {
+    db.deleteImageAndComments(req.params.id)
+        .then(() => {
+            res.json({
+                success: true
+            });
+        })
+        .catch(err => {
+            console.log('err in post delete-image: ', err);
+        });
+});
 
 app.listen(8080, () => ca.rainbow("8080 listening!"));
