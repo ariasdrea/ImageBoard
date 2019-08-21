@@ -2,7 +2,7 @@ const express = require("express");
 const app = express();
 const ca = require("chalk-animation");
 const db = require("./db");
-///// Configurartion for image upload /////
+///// Configuration for image upload /////
 const multer = require("multer");
 const uidSafe = require("uid-safe");
 const path = require("path");
@@ -70,11 +70,13 @@ app.post("/upload", uploader.single("file"), s3.upload, (req, res) => {
     let file = req.file; //file we upload
     let url = req.file.filename;
     let fullUrl = config.s3Url + url;
-
+    console.log('req.body in post upload: ', req.body);
+    // console.log('typeof req.body.tags:', typeof req,);
     // console.log("req.file in POST/upload:", req.file);
     if (file) {
         db.uploadImage(fullUrl, username, title, description)
             .then(result => {
+                // db.insertTags(t)
                 res.json(result.rows);
             })
             .catch(err => {

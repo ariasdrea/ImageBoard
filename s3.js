@@ -3,7 +3,6 @@ const aws = require('aws-sdk');
 
 let secrets;
 if (process.env.NODE_ENV == "production") {
-    // in prod the secrets are environment variables
     secrets = process.env;
 } else {
     secrets = require("./secrets");

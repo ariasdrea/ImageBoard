@@ -136,7 +136,8 @@
                 title: "",
                 description: "",
                 username: "",
-                file: null
+                file: null,
+                tags: []
             },
             totalImages: ""
         }, // data ends (comma is very important!)
@@ -226,6 +227,7 @@
                 formData.append("description", this.form.description);
                 formData.append("username", this.form.username);
                 formData.append("file", this.form.file);
+                formData.append('tags', this.form.tags);
                 //if you console.log formData, it will show an empty object.
 
                 //POST req to server - 2nd arg is the data we're sending as part of the request
@@ -238,6 +240,12 @@
                         // );
                         var uploadedImage = resp.data[0];
                         self.images.unshift(uploadedImage);
+
+                        self.title = '';
+                        self.description = '';
+                        self.username = '';
+                    }).then(function(e) {
+                        console.log('e.target:', e.target);
                     })
                     .catch(function(err) {
                         return err;

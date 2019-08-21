@@ -106,3 +106,12 @@ exports.deleteImageAndComments = id => {
         [id]
     );
 };
+
+///////// TAGS
+// exports.insertTags = tag => {
+//     return db.query(`
+//         INSERT INTO tags (tag)
+//         VALUES $1
+//         RETURNING *
+//         `);
+// };
