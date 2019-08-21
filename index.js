@@ -1,6 +1,5 @@
 const express = require("express");
 const app = express();
-const ca = require("chalk-animation");
 const db = require("./db");
 ///// Configuration for image upload /////
 const multer = require("multer");
@@ -142,4 +141,4 @@ app.post('/delete-image/:id', (req, res) => {
         });
 });
 
-app.listen(8080, () => ca.rainbow("8080 listening!"));
+app.listen(8080, () => console.log("8080 listening!"));
