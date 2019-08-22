@@ -204,11 +204,6 @@
             closingTheComponent: function() {
                 this.imageId = null;
                 history.replaceState(null, null, ' ');
-
-                let self = this;
-                axios.get("/images").then(function(resp) {
-                    self.images = resp.data.rows;
-                });
             },
 
             //runs every time you select a file and click open
