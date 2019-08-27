@@ -60,7 +60,6 @@ exports.getImageInfo = id => {
     });
 };
 
-
 exports.getComments = id => {
     return db.query(
         `SELECT *
