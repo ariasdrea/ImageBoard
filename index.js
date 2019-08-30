@@ -1,18 +1,16 @@
 const express = require("express");
 const app = express();
 const db = require("./db");
-///// Configuration for image upload /////
+// Configurartion for image upload
 const multer = require("multer");
 const uidSafe = require("uid-safe");
 const path = require("path");
-//////////////////////////////////////////
+////////////////////////////////
 const config = require("./config.json");
 const s3 = require("./s3");
 const moment = require('moment');
 
-const bodyParser = require("body-parser");
-app.use(bodyParser.json());
-
+app.use(express.json());
 app.disable("x-powered-by");
 
 ////////// FILE UPLOAD BOILERPLATE ////////
@@ -39,9 +37,8 @@ app.use(express.static("./public"));
 app.use(express.static("./uploads"));
 
 app.get("/images", (req, res) => {
-    db.getImages() //gets 3 images
+    db.getImages()
         .then(results => {
-            // console.log("results in get images:", results);
             res.json(results);
         })
         .catch(err => {
@@ -50,9 +47,8 @@ app.get("/images", (req, res) => {
 });
 
 app.get("/getAllImages", (req, res) => {
-    db.getAllImages() //gets all images
+    db.getAllImages()
         .then(results => {
-            // console.log("results in get images:", results);
             res.json(results);
         })
         .catch(err => {
@@ -60,19 +56,14 @@ app.get("/getAllImages", (req, res) => {
         });
 });
 
-//middleware function (uploader.single('file')) uploads to 'uploads' directory (HD)
-//s3.upload - is for uploading the file to AWS
+//(uploader.single('file')) uploads to 'uploads' directory (HD)
+//s3.upload - uploads to AWS
 app.post("/upload", uploader.single("file"), s3.upload, (req, res) => {
-    let title = req.body.title;
-    let description = req.body.description;
-    let username = req.body.username;
-    let file = req.file; //file we upload
+    let { title, description, username } = req.body;
     let url = req.file.filename;
     let fullUrl = config.s3Url + url;
-    console.log('req.body in post upload: ', req.body);
-    // console.log('typeof req.body.tags:', typeof req,);
-    // console.log("req.file in POST/upload:", req.file);
-    if (file) {
+
+    if (req.file) {
         db.uploadImage(fullUrl, username, title, description)
             .then(result => {
                 // db.insertTags(t)
@@ -99,21 +90,19 @@ app.get("/get-image-info/:id", (req, res) => {
 });
 
 app.get("/get-comments/:id", (req, res) => {
-    db.getComments(req.params.id).then(result => {
-        result.forEach(comment => {
-            comment.added = moment(comment.added).format("MMM Do YY");
+    db.getComments(req.params.id)
+        .then(result => {
+            result.forEach(comment => {
+                comment.added = moment(comment.added).format("MMM Do YY");
+            });
+            res.json(result);
         });
-        res.json(result);
-    });
 });
 
 app.post("/insert-comment/:id", (req, res) => {
-    //if req.body evaluates to {}, check body parser
-    let comment = req.body.comment;
-    let modalUser = req.body.modalUser;
-    let id = req.params.id;
+    let { comment, modalUser } = req.body;
 
-    db.insertComment(comment, modalUser, id)
+    db.insertComment(comment, modalUser, req.params.id)
         .then(result => {
             result.added = moment(comment.added).format("MMM Do YY");
             res.json(result);
@@ -124,9 +113,10 @@ app.post("/insert-comment/:id", (req, res) => {
 });
 
 app.get("/get-more-images/:id", (req, res) => {
-    db.getMoreImages(req.params.id).then(images => {
-        res.json(images);
-    });
+    db.getMoreImages(req.params.id)
+        .then(images => {
+            res.json(images);
+        });
 });
 
 app.post('/delete-image/:id', (req, res) => {
@@ -141,4 +131,4 @@ app.post('/delete-image/:id', (req, res) => {
         });
 });
 
-app.listen(process.env.PORT || 8080, () => console.log("8080 listening!"));
+app.listen(8080, () => console.log("8080 listening!"));
