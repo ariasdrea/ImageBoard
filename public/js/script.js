@@ -23,8 +23,8 @@
 
         watch: {
             imageId: function() {
-                // console.log("this.imageId:", this.imageId);
                 var self = this;
+
                 axios
                     .get("/get-image-info/" + this.imageId)
                     .then(function(resp) {
@@ -38,9 +38,9 @@
                         axios
                             .get("/get-comments/" + self.imageId)
                             .then(function(resp) {
-                                // console.log('resp in watch comments: ', resp.data);
                                 self.comments = resp.data;
-                                // console.log('self.comments.length:', self.comments.length);
+
+                                //hides comment box if no comments
                                 if (!self.comments.length) {
                                     self.exists = false;
                                 } else {
@@ -53,30 +53,31 @@
 
         mounted: function() {
             let self = this;
+
             axios
                 .get("/get-image-info/" + this.imageId)
                 .then(function(resp) {
-                    // console.log('resp.data: ', resp.data);
                     self.title = resp.data[0].title;
                     self.description = resp.data[0].description;
                     self.url = resp.data[0].url;
                     self.username = resp.data[0].username;
                     self.prevId = resp.data[0].prevId;
                     self.nextId = resp.data[0].nextId;
-                })
-                .then(function() {
-                    axios
-                        .get("/get-comments/" + self.imageId)
-                        .then(function(resp) {
-                            self.comments = resp.data;
+                }).catch(function(err) {
+                    console.log("err in get-img-info:", err);
+                });
 
-                            if(!self.comments.length) {
-                                self.exists = false;
-                            }
-                        });
-                })
-                .catch(function(err) {
-                    console.log("err in mounted axios:", err);
+            axios
+                .get("/get-comments/" + self.imageId)
+                .then(function(resp) {
+                    self.comments = resp.data;
+
+                    //hides comment box if no comments
+                    if(!self.comments.length) {
+                        self.exists = false;
+                    }
+                }).catch(function(err) {
+                    console.log('err in axios get-comments: ', err);
                 });
         },
 
@@ -105,12 +106,14 @@
             deleteImage: function(e) {
                 e.preventDefault();
                 let self = this;
-                axios.post('/delete-image/' + this.imageId).then(function() {
-                    history.replaceState(null, null, ' ');
-                    self.$emit("close-component");
-                }).catch(function(err) {
-                    console.log('err in method deleteImage: ', err);
-                });
+                axios
+                    .post('/delete-image/' + this.imageId)
+                    .then(function() {
+                        history.replaceState(null, null, ' ');
+                        self.$emit("close-component");
+                    }).catch(function(err) {
+                        console.log('err in method deleteImage: ', err);
+                    });
             }
         }
     });
@@ -132,7 +135,6 @@
             morePics: true,
             imageId: location.hash.slice(1) || 0,
             form: {
-                // where the input field data will be held.
                 title: "",
                 description: "",
                 username: "",
@@ -225,14 +227,12 @@
                 formData.append('tags', this.form.tags);
                 //if you console.log formData, it will show an empty object.
 
+                console.log();
+
                 //POST req to server - 2nd arg is the data we're sending as part of the request
                 axios
                     .post("/upload", formData)
                     .then(function(resp) {
-                        // console.log(
-                        //     "resp.data[0] in post upload",
-                        //     resp.data[0]
-                        // );
                         var uploadedImage = resp.data[0];
                         self.images.unshift(uploadedImage);
 
