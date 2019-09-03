@@ -192,7 +192,7 @@ form {
 }
 
 #comment-container {
-    height: 30%;
+    height: 20%;
     overflow-y: scroll;
     border: .5px solid grey;
     margin: 0 auto;
