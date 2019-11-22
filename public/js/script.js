@@ -156,8 +156,7 @@
             axios.get("/images").then(function(resp) {
                 // console.log("resp.data in get images:", resp.data);
                 self.images = resp.data.rows;
-                // console.log("self.images in mounted:", self.images);
-
+                
                 if(!self.images.length) {
                     self.morePics = false;
                 }
@@ -226,8 +225,6 @@
                 formData.append("file", this.form.file);
                 formData.append('tags', this.form.tags);
                 //if you console.log formData, it will show an empty object.
-
-                console.log();
 
                 //POST req to server - 2nd arg is the data we're sending as part of the request
                 axios
