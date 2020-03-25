@@ -57,6 +57,11 @@
             </div>
         </div>
 
+        <div class='giphy-start' v-if='startingPoint'>
+            <h2>Upload the first image!</h2>
+            <img src="https://media.giphy.com/media/9rtpurjbqiqZXbBBet/giphy.gif" alt="upload an image">
+        </div>
+
         <!-- MORE BUTTON -->
         <div id='more-button-div'>
             <button id='more-button' @click='getMoreImages' v-if='morePics'>More</button>

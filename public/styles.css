@@ -42,7 +42,7 @@ img {
 
 .hr-in-form {
     width: 70%;
-    margin-bottom: 40px;
+    margin-bottom: 30px;
     border: 0.5px solid black;
 }
 
@@ -304,4 +304,9 @@ button:focus {
     width: 100%;
     background-color: rgba(0, 0, 0, 0.6);
     transition: 1s ease;
+}
+
+/* GIPHY START */
+.giphy-start {
+    text-align: center;
 }

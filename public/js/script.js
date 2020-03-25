@@ -143,7 +143,8 @@
                 file: null,
                 tags: []
             },
-            totalImages: ""
+            totalImages: "",
+            startingPoint: ""
         }, // data ends (comma is very important!)
 
         mounted: function() {
@@ -159,6 +160,7 @@
                 axios.get('/getAllImages').then(function (resp) {
                     if(!self.images.length || resp.data.rowCount === 3) {
                         self.morePics = false;
+                        self.startingPoint = true;
                     }
                 });
             });
@@ -212,12 +214,11 @@
                     .then(function(resp) {
                         var uploadedImage = resp.data[0];
                         self.images.unshift(uploadedImage);
+                        self.startingPoint = false;
 
                         self.title = '';
                         self.description = '';
                         self.username = '';
-                    }).then(function(e) {
-                        console.log('e.target:', e.target);
                     })
                     .catch(function(err) {
                         return err;
@@ -237,6 +238,7 @@
 
                     if (self.images.length === self.totalImages) {
                         self.morePics = false;
+                        self.startingPoint = true;
                     }
                 });
             }
