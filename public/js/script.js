@@ -51,7 +51,7 @@
             }
         },
 
-        mounted: function() {
+        mounted: function () {
             let self = this;
 
             axios
@@ -64,7 +64,7 @@
                     self.prevId = resp.data[0].prevId;
                     self.nextId = resp.data[0].nextId;
                 }).catch(function(err) {
-                    console.log("err in get-img-info:", err);
+                    console.log('err in get-img-info:', err);
                 });
 
             axios
@@ -82,7 +82,8 @@
         },
 
         methods: {
-            closeComponent: function() {
+            closeComponent: function () {
+                // close-component refers to fn inside image-modal in html
                 this.$emit("close-component");
             },
 
@@ -108,9 +109,10 @@
                 let self = this;
                 axios
                     .post('/delete-image/' + this.imageId)
-                    .then(function() {
-                        history.replaceState(null, null, ' ');
-                        self.$emit("close-component");
+                    .then(function () {
+                        // close-component refers to fn inside image-modal in html
+                        self.$emit('close-component');
+                        self.$emit('update-images');
                     }).catch(function(err) {
                         console.log('err in method deleteImage: ', err);
                     });
@@ -145,27 +147,23 @@
         }, // data ends (comma is very important!)
 
         mounted: function() {
-            //We make AXIOS requests in 'mounted' to get data from the server that we want to show onscreen when user visits site
-            //assigning 'this' to self so that its meaning remains throughout nested fn
             var self = this;
 
             window.addEventListener("hashchange", function() {
                 self.imageId = location.hash.slice(1);
             });
 
-            axios.get("/images").then(function(resp) {
-                // console.log("resp.data in get images:", resp.data);
-                self.images = resp.data.rows;
-                
-                if(!self.images.length) {
-                    self.morePics = false;
-                }
+            axios.get("/images").then(function (resp) {
+                self.images = resp.data;
+
+                axios.get('/getAllImages').then(function (resp) {
+                    if(!self.images.length || resp.data.rowCount === 3) {
+                        self.morePics = false;
+                    }
+                });
             });
-
-        }, //mounted ends
-
+        },
         methods: {
-            //every single function that runs in response to an event is written here
             show: function() {
                 if (this.showUp == "appear") {
                     this.showUp = "";
@@ -173,16 +171,14 @@
                     this.showUp = "appear";
                 }
             },
-
             getMoreImages: function() {
                 var self = this;
                 var lastId = this.images[this.images.length - 1].id;
 
                 //Get all images from the db and access the property rowCount to get the total # of images.
-                axios.get("/getAllImages").then(function(resp) {
+                axios.get("/getAllImages").then(function (resp) {                    
                     var totalImagesInDb = resp.data.rowCount;
                     self.totalImages = totalImagesInDb;
-                    // console.log("this.totalImages:", this.totalImages);
                 });
 
                 axios.get("/get-more-images/" + lastId).then(function(resp) {
@@ -196,37 +192,21 @@
                     }
                 });
             },
-
-            // toggleComponent: function(e) {
-            //     var idOfClickedImg = e.target.id;
-            //     this.imageId = idOfClickedImg;
-            // },
-
-            closingTheComponent: function() {
-                this.imageId = null;
-                history.replaceState(null, null, ' ');
-            },
-
             //runs every time you select a file and click open
             handleFileChange: function(e) {
                 this.form.file = e.target.files[0];
             },
-
             uploadFile: function(e) {
-                //the default behavior of the button is to submit and therefore, the page refreshes - need to preventdefault.
                 e.preventDefault();
                 var self = this;
-                //need to use FormData API to handle the file & add all of the
-                //file's info to formData by appending it to the variable
+   
                 var formData = new FormData();
                 formData.append("title", this.form.title);
                 formData.append("description", this.form.description);
                 formData.append("username", this.form.username);
                 formData.append("file", this.form.file);
                 formData.append('tags', this.form.tags);
-                //if you console.log formData, it will show an empty object.
-
-                //POST req to server - 2nd arg is the data we're sending as part of the request
+   
                 axios
                     .post("/upload", formData)
                     .then(function(resp) {
@@ -243,6 +223,23 @@
                         return err;
                     });
             }, //uploadFile ends
-        } //mounted ends
+            closingTheComponent: function() {
+                this.imageId = null;
+                history.replaceState(null, null, ' ');
+            },
+            updateImagesAfterDelete: function () {
+                var self = this;
+        
+                axios.get("/getAllImages").then(function (resp) {
+                    self.images = resp.data.rows;
+
+                    self.totalImages = resp.data.rowCount;
+
+                    if (self.images.length === self.totalImages) {
+                        self.morePics = false;
+                    }
+                });
+            }
+        } 
     });
 })();

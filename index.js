@@ -38,8 +38,8 @@ app.use(express.static("./uploads"));
 
 app.get("/images", (req, res) => {
     db.getImages()
-        .then(results => {
-            res.json(results);
+        .then(({ rows }) => {            
+            res.json(rows);
         })
         .catch(err => {
             console.log("ERR in GET - images:", err);
@@ -48,8 +48,8 @@ app.get("/images", (req, res) => {
 
 app.get("/getAllImages", (req, res) => {
     db.getAllImages()
-        .then(results => {
-            res.json(results);
+        .then(({ rowCount, rows }) => {
+            res.json({ rowCount, rows });
         })
         .catch(err => {
             console.log("ERR in GET - getAllImages:", err);
