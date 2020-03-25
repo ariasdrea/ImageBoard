@@ -160,7 +160,7 @@
                 self.images = resp.data;
 
                 axios.get('/getAllImages').then(function (resp) {
-                    if (!self.images.length || resp.data.rowCount === 3) {
+                    if (!self.images.length || resp.data.rowCount === 0) {
                         self.morePics = false;
                         self.startingPoint = true;
                     }
