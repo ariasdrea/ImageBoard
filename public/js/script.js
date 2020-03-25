@@ -158,7 +158,7 @@
                 self.images = resp.data;
 
                 axios.get('/getAllImages').then(function (resp) {
-                    if(!self.images.length || resp.data.rowCount === 3) {
+                    if (!self.images.length || resp.data.rowCount === 3) {
                         self.morePics = false;
                         self.startingPoint = true;
                     }
@@ -185,10 +185,7 @@
 
                 axios.get("/get-more-images/" + lastId).then(function(resp) {
                     self.images.push.apply(self.images, resp.data);
-                    // console.log("self.images:", self.images);
-                    // console.log("self.images.length:", self.images.length); // console logs the array to view length as you put pictures into the id when you hit the more button
 
-                    // makes button disappear when you load all the images from the database
                     if (self.images.length === self.totalImages) {
                         self.morePics = false;
                     }
@@ -216,9 +213,9 @@
                         self.images.unshift(uploadedImage);
                         self.startingPoint = false;
 
-                        self.title = '';
-                        self.description = '';
-                        self.username = '';
+                        self.form.title = "";
+                        self.form.description = "";
+                        self.form.username = ""; 
                     })
                     .catch(function(err) {
                         return err;
@@ -228,18 +225,21 @@
                 this.imageId = null;
                 history.replaceState(null, null, ' ');
             },
+
             updateImagesAfterDelete: function () {
                 var self = this;
         
                 axios.get("/getAllImages").then(function (resp) {
                     self.images = resp.data.rows;
 
-                    self.totalImages = resp.data.rowCount;
-
-                    if (self.images.length === self.totalImages) {
-                        self.morePics = false;
+                    self.totalImages = resp.data.rowCount;                    
+                    // hides the button when we delete & we have the first image onscreen
+                    if (self.images == 0) {
+                        console.log('in here');
                         self.startingPoint = true;
-                    }
+                    } else if (self.images.length === self.totalImages) {
+                        self.morePics = false;
+                    } 
                 });
             }
         } 
