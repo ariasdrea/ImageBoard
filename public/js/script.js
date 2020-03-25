@@ -109,7 +109,9 @@
                 let self = this;
                 axios
                     .post('/delete-image/' + this.imageId)
-                    .then(function () {
+                    .then(function (resp) {
+                        console.log('resp in deleteImage: ', resp);
+                        
                         // close-component refers to fn inside image-modal in html
                         self.$emit('close-component');
                         self.$emit('update-images');
@@ -228,19 +230,23 @@
 
             updateImagesAfterDelete: function () {
                 var self = this;
-        
-                axios.get("/getAllImages").then(function (resp) {
-                    self.images = resp.data.rows;
 
-                    self.totalImages = resp.data.rowCount;                    
-                    // hides the button when we delete & we have the first image onscreen
-                    if (self.images == 0) {
-                        console.log('in here');
-                        self.startingPoint = true;
-                    } else if (self.images.length === self.totalImages) {
-                        self.morePics = false;
-                    } 
+                axios.get('/getLastThreeImgs').then(function (resp) {
+                    self.images = resp.data;   
+
+                    axios.get("/getAllImages").then(function (resp) {
+                        self.totalImages = resp.data.rowCount;                    
+                        // hides the button when we delete & we have the first image onscreen
+                        if (self.images == 0) {
+                            console.log('in here');
+                            self.startingPoint = true;
+                        } else if (self.images.length === self.totalImages) {
+                            self.morePics = false;
+                        } 
+                    });
                 });
+        
+               
             }
         } 
     });

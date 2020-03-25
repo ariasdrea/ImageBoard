@@ -106,6 +106,15 @@ exports.deleteImageAndComments = id => {
     );
 };
 
+exports.getLastThreeImgs = () => {
+    return db.query(
+        `SELECT * FROM images
+        ORDER BY id DESC
+        LIMIT 3;
+        `
+    );
+};
+
 ///////// TAGS
 // exports.insertTags = tag => {
 //     return db.query(`
