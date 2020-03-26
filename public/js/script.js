@@ -86,7 +86,6 @@
                 // close-component refers to fn inside image-modal in html
                 this.$emit("close-component");
             },
-
             insertComment: function(e) {
                 e.preventDefault();
                 let self = this;
@@ -103,15 +102,12 @@
                         console.log("err in method insertComment:", err);
                     });
             },
-
             deleteImage: function(e) {
                 e.preventDefault();
                 let self = this;
                 axios
                     .post('/delete-image/' + this.imageId)
-                    .then(function (resp) {
-                        console.log('resp in deleteImage: ', resp);
-                        
+                    .then(function() {                        
                         // close-component refers to fn inside image-modal in html
                         self.$emit('close-component');
                         self.$emit('update-images');
@@ -147,8 +143,7 @@
             },
             totalImages: "",
             startingPoint: ""
-        }, // data ends (comma is very important!)
-
+        }, 
         mounted: function() {
             var self = this;
 
@@ -193,7 +188,6 @@
                     }
                 });
             },
-            //runs every time you select a file and click open
             handleFileChange: function(e) {
                 this.form.file = e.target.files[0];
             },
@@ -222,22 +216,19 @@
                     .catch(function(err) {
                         return err;
                     });
-            }, //uploadFile ends
+            }, 
             closingTheComponent: function() {
                 this.imageId = null;
                 history.replaceState(null, null, ' ');
             },
-
             updateImagesAfterDelete: function () {
                 var self = this;
 
                 axios.get('/getLastThreeImgs').then(function (resp) {
                     self.images = resp.data;
-                    self.morePics = true;
 
                     axios.get("/getAllImages").then(function (resp) {
-                        self.totalImages = resp.data.rowCount;                    
-                        // hides the button when we delete & we have the first image onscreen
+                        self.totalImages = resp.data.rowCount;
                         if (self.images == 0) {
                             self.startingPoint = true;
                         } else if (self.images.length === self.totalImages) {
@@ -245,8 +236,6 @@
                         } 
                     });
                 });
-        
-               
             }
         } 
     });
