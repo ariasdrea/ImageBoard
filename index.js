@@ -60,17 +60,18 @@ app.get("/getAllImages", (req, res) => {
 //s3.upload - uploads to AWS
 app.post("/upload", uploader.single("file"), s3.upload, (req, res) => {
     let { title, description, username } = req.body;
-    let url = req.file.filename;
+    let { filename: url } = req.file;
     let fullUrl = config.s3Url + url;
 
     if (req.file) {
         db.uploadImage(fullUrl, username, title, description)
             .then(result => {
-                // db.insertTags(t)
                 res.json(result.rows);
             })
-            .catch(err => {
-                console.log("error in uploadimage:", err);
+            .catch(() => {
+                res.json({
+                    err: true
+                });
             });
     } else {
         res.json({

@@ -28,6 +28,8 @@
         <header>
             <p id="title"> IMAGE | DOOR </p>
         </header>
+        
+        <p class='error' v-if='errInUpload'>Please fill in all fields</p>
 
         <hr class='hr-in-form'>
 
@@ -36,7 +38,7 @@
             <!-- v-model binds the value in this specific field to the data property -->
             <input v-model='form.title' type="text" placeholder="title" name="title">
             <input v-model='form.description' type="text" placeholder="description" name="description">
-            <input v-model='form.username' type="text" placeholder="username" name="username">
+            <input v-model='form.username' type="text" placeholder="username" name="username"> 
             <!-- <input v-model='form.tags' type="text" placeholder='tag your pic' name='tags'> -->
             <!-- Must have name & type = file an accept=image/* means that file must be an img-->
             <input name='file' type="file" accept="image/*" @change='handleFileChange'>

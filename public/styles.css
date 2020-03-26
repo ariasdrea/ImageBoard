@@ -310,3 +310,8 @@ button:focus {
 .giphy-start {
     text-align: center;
 }
+
+.error {
+    text-align: center;
+    color: red;
+}

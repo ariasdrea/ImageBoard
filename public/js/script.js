@@ -142,7 +142,8 @@
                 tags: []
             },
             totalImages: "",
-            startingPoint: ""
+            startingPoint: "",
+            errInUpload: ""
         }, 
         mounted: function() {
             var self = this;
@@ -204,14 +205,18 @@
    
                 axios
                     .post("/upload", formData)
-                    .then(function(resp) {
-                        var uploadedImage = resp.data[0];
-                        self.images.unshift(uploadedImage);
-                        self.startingPoint = false;
+                    .then(function (resp) {
+                        if (resp.data.err) {
+                            self.errInUpload = true;
+                        } else {
+                            var uploadedImage = resp.data[0];
+                            self.images.unshift(uploadedImage);
+                            self.startingPoint = false;
 
-                        self.form.title = "";
-                        self.form.description = "";
-                        self.form.username = ""; 
+                            self.form.title = "";
+                            self.form.description = "";
+                            self.form.username = ""; 
+                        }
                     })
                     .catch(function(err) {
                         return err;
