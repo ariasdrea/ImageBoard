@@ -212,6 +212,7 @@
                             var uploadedImage = resp.data[0];
                             self.images.unshift(uploadedImage);
                             self.startingPoint = false;
+                            self.errInUpload = false;
 
                             self.form.title = "";
                             self.form.description = "";
