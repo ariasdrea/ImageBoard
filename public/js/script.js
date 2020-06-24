@@ -122,6 +122,12 @@
         el: "#intro-page",
         data: {
             show: true
+        },
+
+        mounted: function () {
+            if (!location.hash == '') {
+                this.show = false;
+            }
         }
     });
 
