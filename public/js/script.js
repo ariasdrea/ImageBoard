@@ -94,6 +94,9 @@
                     .then(function(resp) {
                         self.comments.unshift(resp.data);
 
+                        self.form.comment = "";
+                        self.form.modalUser = "";
+
                         if (self.comments) {
                             self.exists = true;
                         }
