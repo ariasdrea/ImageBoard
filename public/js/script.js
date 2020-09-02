@@ -52,6 +52,7 @@
         },
 
         mounted: function () {
+            console.log('this in component: ', this.imageId);
             let self = this;
 
             axios
@@ -226,7 +227,8 @@
                         return err;
                     });
             }, 
-            closingTheComponent: function() {
+            closingTheComponent: function () {
+                console.log('running');
                 this.imageId = null;
                 history.replaceState(null, null, ' ');
             },
