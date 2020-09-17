@@ -1,9 +1,9 @@
 // DO NOT USE ARROW FUNCTIONS
-(function() {
+(function () {
     Vue.component("image-modal", {
         template: "#my-template",
         props: ["imageId"], //props has the property of Vue instance data we want this component to have access to.
-        data: function() {
+        data: function () {
             //data in a component is a fn that returns an obj. the fn will ensure that the each instance of the component will have their own data object and not share it.
             return {
                 title: "",
@@ -22,22 +22,23 @@
         },
 
         watch: {
-            imageId: function() {
+            imageId: function () {
                 var self = this;
 
                 axios
                     .get("/get-image-info/" + this.imageId)
-                    .then(function(resp) {
+                    .then(function (resp) {
                         self.title = resp.data[0].title;
                         self.description = resp.data[0].description;
                         self.url = resp.data[0].url;
                         self.username = resp.data[0].username;
                         self.nextId = resp.data[0].nextId;
                         self.prevId = resp.data[0].prevId;
-                    }).then(function() {
+                    })
+                    .then(function () {
                         axios
                             .get("/get-comments/" + self.imageId)
-                            .then(function(resp) {
+                            .then(function (resp) {
                                 self.comments = resp.data;
 
                                 //hides comment box if no comments
@@ -52,33 +53,35 @@
         },
 
         mounted: function () {
-            console.log('this in component: ', this.imageId);
+            console.log("this in component: ", this.imageId);
             let self = this;
 
             axios
                 .get("/get-image-info/" + this.imageId)
-                .then(function(resp) {
+                .then(function (resp) {
                     self.title = resp.data[0].title;
                     self.description = resp.data[0].description;
                     self.url = resp.data[0].url;
                     self.username = resp.data[0].username;
                     self.prevId = resp.data[0].prevId;
                     self.nextId = resp.data[0].nextId;
-                }).catch(function(err) {
-                    console.log('err in get-img-info:', err);
+                })
+                .catch(function (err) {
+                    console.log("err in get-img-info:", err);
                 });
 
             axios
                 .get("/get-comments/" + self.imageId)
-                .then(function(resp) {
+                .then(function (resp) {
                     self.comments = resp.data;
 
                     //hides comment box if no comments
-                    if(!self.comments.length) {
+                    if (!self.comments.length) {
                         self.exists = false;
                     }
-                }).catch(function(err) {
-                    console.log('err in axios get-comments: ', err);
+                })
+                .catch(function (err) {
+                    console.log("err in axios get-comments: ", err);
                 });
         },
 
@@ -87,12 +90,12 @@
                 // close-component refers to fn inside image-modal in html
                 this.$emit("close-component");
             },
-            insertComment: function(e) {
+            insertComment: function (e) {
                 e.preventDefault();
                 let self = this;
                 axios
                     .post("/insert-comment/" + this.imageId, self.form)
-                    .then(function(resp) {
+                    .then(function (resp) {
                         self.comments.unshift(resp.data);
 
                         self.form.comment = "";
@@ -102,21 +105,22 @@
                             self.exists = true;
                         }
                     })
-                    .catch(function(err) {
+                    .catch(function (err) {
                         console.log("err in method insertComment:", err);
                     });
             },
-            deleteImage: function(e) {
+            deleteImage: function (e) {
                 e.preventDefault();
                 let self = this;
                 axios
-                    .post('/delete-image/' + this.imageId)
-                    .then(function() {                        
+                    .post("/delete-image/" + this.imageId)
+                    .then(function () {
                         // close-component refers to fn inside image-modal in html
-                        self.$emit('close-component');
-                        self.$emit('update-images');
-                    }).catch(function(err) {
-                        console.log('err in method deleteImage: ', err);
+                        self.$emit("close-component");
+                        self.$emit("update-images");
+                    })
+                    .catch(function (err) {
+                        console.log("err in method deleteImage: ", err);
                     });
             }
         }
@@ -148,18 +152,18 @@
             totalImages: "",
             startingPoint: "",
             errInUpload: ""
-        }, 
-        mounted: function() {
+        },
+        mounted: function () {
             var self = this;
 
-            window.addEventListener("hashchange", function() {
+            window.addEventListener("hashchange", function () {
                 self.imageId = location.hash.slice(1);
             });
 
             axios.get("/images").then(function (resp) {
                 self.images = resp.data;
 
-                axios.get('/getAllImages').then(function (resp) {
+                axios.get("/getAllImages").then(function (resp) {
                     if (!self.images.length || resp.data.rowCount === 0) {
                         self.morePics = false;
                         self.startingPoint = true;
@@ -168,24 +172,24 @@
             });
         },
         methods: {
-            show: function() {
+            show: function () {
                 if (this.showUp == "appear") {
                     this.showUp = "";
                 } else {
                     this.showUp = "appear";
                 }
             },
-            getMoreImages: function() {
+            getMoreImages: function () {
                 var self = this;
                 var lastId = this.images[this.images.length - 1].id;
 
                 //Get all images from the db and access the property rowCount to get the total # of images.
-                axios.get("/getAllImages").then(function (resp) {                    
+                axios.get("/getAllImages").then(function (resp) {
                     var totalImagesInDb = resp.data.rowCount;
                     self.totalImages = totalImagesInDb;
                 });
 
-                axios.get("/get-more-images/" + lastId).then(function(resp) {
+                axios.get("/get-more-images/" + lastId).then(function (resp) {
                     self.images.push.apply(self.images, resp.data);
 
                     if (self.images.length === self.totalImages) {
@@ -193,20 +197,20 @@
                     }
                 });
             },
-            handleFileChange: function(e) {
+            handleFileChange: function (e) {
                 this.form.file = e.target.files[0];
             },
-            uploadFile: function(e) {
+            uploadFile: function (e) {
                 e.preventDefault();
                 var self = this;
-   
+
                 var formData = new FormData();
                 formData.append("title", this.form.title);
                 formData.append("description", this.form.description);
                 formData.append("username", this.form.username);
                 formData.append("file", this.form.file);
-                formData.append('tags', this.form.tags);
-   
+                formData.append("tags", this.form.tags);
+
                 axios
                     .post("/upload", formData)
                     .then(function (resp) {
@@ -220,22 +224,22 @@
 
                             self.form.title = "";
                             self.form.description = "";
-                            self.form.username = ""; 
+                            self.form.username = "";
                         }
                     })
-                    .catch(function(err) {
+                    .catch(function (err) {
                         return err;
                     });
-            }, 
+            },
             closingTheComponent: function () {
-                console.log('running');
+                console.log("running");
                 this.imageId = null;
-                history.replaceState(null, null, ' ');
+                history.replaceState(null, null, " ");
             },
             updateImagesAfterDelete: function () {
                 var self = this;
 
-                axios.get('/getLastThreeImgs').then(function (resp) {
+                axios.get("/getLastThreeImgs").then(function (resp) {
                     self.images = resp.data;
 
                     axios.get("/getAllImages").then(function (resp) {
@@ -244,10 +248,10 @@
                             self.startingPoint = true;
                         } else if (self.images.length === self.totalImages) {
                             self.morePics = false;
-                        } 
+                        }
                     });
                 });
             }
-        } 
+        }
     });
 })();
