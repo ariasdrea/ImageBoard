@@ -16,11 +16,10 @@
         "aws-sdk": "^2.493.0",
         "body-parser": "^1.15.2",
         "express": "^4.14.0",
-        "knox": "^0.9.2",
-        "moment": "^2.24.0",
+        "moment": "^2.29.1",
         "multer": "^1.2.0",
         "nodemon": "^1.19.2",
-        "spiced-pg": "^1.0.0",
+        "spiced-pg": "^1.0.4",
         "uid-safe": "^2.1.4"
     }
 }

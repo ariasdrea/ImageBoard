@@ -18,7 +18,7 @@ form {
     margin: 0 auto;
     border: 2px solid white;
     position: relative;
-    display: flex
+    display: flex;
 }
 
 .delete-image {
@@ -194,7 +194,7 @@ form {
 #comment-container {
     height: 20%;
     overflow-y: scroll;
-    border: .5px solid grey;
+    border: 0.5px solid grey;
     margin: 0 auto;
     margin-bottom: 20px;
     padding-top: 15px;
@@ -221,6 +221,11 @@ form {
     text-align: center;
 }
 
+.comment-fields {
+    text-align: center;
+    padding-bottom: 2%;
+}
+
 .arrow {
     font-size: 35px;
 }
@@ -237,7 +242,7 @@ form {
 
 .arrow:hover {
     cursor: pointer;
-    color: grey
+    color: grey;
 }
 
 .a-modal {

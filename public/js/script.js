@@ -2,18 +2,15 @@
 (function () {
     Vue.component("image-modal", {
         template: "#my-template",
-        props: ["imageId"], //props has the property of Vue instance data we want this component to have access to.
+        props: ["imageId"],
         data: function () {
-            //data in a component is a fn that returns an obj. the fn will ensure that the each instance of the component will have their own data object and not share it.
             return {
                 title: "",
                 description: "",
                 url: "",
                 username: "",
-                form: {
-                    comment: "",
-                    modalUser: ""
-                },
+                comment: "",
+                modalUser: "",
                 comments: [],
                 exists: true,
                 prevId: null,
@@ -41,7 +38,6 @@
                             .then(function (resp) {
                                 self.comments = resp.data;
 
-                                //hides comment box if no comments
                                 if (!self.comments.length) {
                                     self.exists = false;
                                 } else {
@@ -53,7 +49,6 @@
         },
 
         mounted: function () {
-            console.log("this in component: ", this.imageId);
             let self = this;
 
             axios
@@ -75,7 +70,6 @@
                 .then(function (resp) {
                     self.comments = resp.data;
 
-                    //hides comment box if no comments
                     if (!self.comments.length) {
                         self.exists = false;
                     }
@@ -87,19 +81,21 @@
 
         methods: {
             closeComponent: function () {
-                // close-component refers to fn inside image-modal in html
                 this.$emit("close-component");
             },
-            insertComment: function (e) {
-                e.preventDefault();
+            insertComment: function () {
                 let self = this;
+
                 axios
-                    .post("/insert-comment/" + this.imageId, self.form)
+                    .post("/insert-comment/" + this.imageId, {
+                        comment: this.comment,
+                        modalUser: this.modalUser
+                    })
                     .then(function (resp) {
                         self.comments.unshift(resp.data);
 
-                        self.form.comment = "";
-                        self.form.modalUser = "";
+                        self.comment = "";
+                        self.modalUser = "";
 
                         if (self.comments) {
                             self.exists = true;
@@ -127,28 +123,17 @@
     });
 
     new Vue({
-        el: "#intro-page",
-        data: {
-            show: true
-        }
-    });
-
-    ////////////// VUE INSTANCE //////////////
-    new Vue({
-        //refers to element in index.html with id: main to connect to
         el: "#main",
         data: {
             showUp: "",
             images: [],
             morePics: true,
             imageId: location.hash.slice(1) || 0,
-            form: {
-                title: "",
-                description: "",
-                username: "",
-                file: null,
-                tags: []
-            },
+            title: "",
+            description: "",
+            username: "",
+            file: null,
+            tags: [],
             totalImages: "",
             startingPoint: "",
             errInUpload: ""
@@ -183,7 +168,6 @@
                 var self = this;
                 var lastId = this.images[this.images.length - 1].id;
 
-                //Get all images from the db and access the property rowCount to get the total # of images.
                 axios.get("/getAllImages").then(function (resp) {
                     var totalImagesInDb = resp.data.rowCount;
                     self.totalImages = totalImagesInDb;
@@ -198,18 +182,17 @@
                 });
             },
             handleFileChange: function (e) {
-                this.form.file = e.target.files[0];
+                this.file = e.target.files[0];
             },
-            uploadFile: function (e) {
-                e.preventDefault();
+            uploadFile: function () {
                 var self = this;
 
                 var formData = new FormData();
-                formData.append("title", this.form.title);
-                formData.append("description", this.form.description);
-                formData.append("username", this.form.username);
-                formData.append("file", this.form.file);
-                formData.append("tags", this.form.tags);
+                formData.append("title", this.title);
+                formData.append("description", this.description);
+                formData.append("username", this.username);
+                formData.append("file", this.file);
+                formData.append("tags", this.tags);
 
                 axios
                     .post("/upload", formData)
@@ -222,9 +205,9 @@
                             self.startingPoint = false;
                             self.errInUpload = false;
 
-                            self.form.title = "";
-                            self.form.description = "";
-                            self.form.username = "";
+                            self.title = "";
+                            self.description = "";
+                            self.username = "";
                         }
                     })
                     .catch(function (err) {
