@@ -6,10 +6,13 @@ const db = spicedPg(
 
 exports.getImages = () => {
     return db.query(
-        `SELECT *
-        FROM images
+        `SELECT url, title, id, (
+            SELECT id FROM images
+            ORDER BY id ASC
+            LIMIT 1
+        ) AS "lowestId" FROM images
         ORDER BY id DESC
-        LIMIT 3`
+        LIMIT 3;`
     );
 };
 

@@ -1,4 +1,3 @@
-// DO NOT USE ARROW FUNCTIONS
 (function () {
     Vue.component("image-modal", {
         template: "#my-template",
@@ -21,16 +20,23 @@
         watch: {
             imageId: function () {
                 var self = this;
+                console.log("WATCHER RUNS");
 
                 axios
                     .get("/get-image-info/" + this.imageId)
                     .then(function (resp) {
-                        self.title = resp.data[0].title;
-                        self.description = resp.data[0].description;
-                        self.url = resp.data[0].url;
-                        self.username = resp.data[0].username;
-                        self.nextId = resp.data[0].nextId;
-                        self.prevId = resp.data[0].prevId;
+                        // console.log("resp: ", resp);
+                        // !resp.data.success breaks the next and prev buttons
+                        if (!resp.data.length) {
+                            self.$emit("close-component");
+                        } else {
+                            self.title = resp.data[0].title;
+                            self.description = resp.data[0].description;
+                            self.url = resp.data[0].url;
+                            self.username = resp.data[0].username;
+                            self.nextId = resp.data[0].nextId;
+                            self.prevId = resp.data[0].prevId;
+                        }
                     })
                     .then(function () {
                         axios
@@ -144,15 +150,23 @@
                 self.imageId = location.hash.slice(1);
             });
 
-            axios.get("/images").then(function (resp) {
-                self.images = resp.data;
+            // setInterval(function () {
+            //     console.log("hello");
+            // }, 2000);
 
-                axios.get("/getAllImages").then(function (resp) {
-                    if (!self.images.length || resp.data.rowCount === 0) {
+            axios.get("/images").then(function (resp) {
+                self.images = resp.data.rows;
+
+                for (let i = 0; i < resp.data.length; i++) {
+                    if (resp.data[i].id === resp.data[i].lowestId) {
                         self.morePics = false;
-                        self.startingPoint = true;
                     }
-                });
+                }
+
+                if (!resp.data.rowCount) {
+                    self.morePics = false;
+                    self.startingPoint = true;
+                }
             });
         },
         methods: {
@@ -204,6 +218,8 @@
                             self.title = "";
                             self.description = "";
                             self.username = "";
+                            document.querySelector('input[type="file"]').value =
+                                "";
                         }
                     })
                     .catch(function (err) {

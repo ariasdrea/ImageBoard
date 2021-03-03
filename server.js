@@ -34,14 +34,10 @@ app.use(express.static("./uploads"));
 
 app.get("/images", (req, res) => {
     db.getImages()
-        .then(({ rows }) => res.json(rows))
+        .then(({ rows, rowCount }) => {
+            res.json({ rows, rowCount });
+        })
         .catch((err) => console.log("ERR in GET - images:", err));
-});
-
-app.get("/getAllImages", (req, res) => {
-    db.getAllImages()
-        .then(({ rowCount, rows }) => res.json({ rowCount, rows }))
-        .catch((err) => console.log("ERR in GET - getAllImages:", err));
 });
 
 app.post("/upload", uploader.single("file"), s3.upload, (req, res) => {
@@ -63,7 +59,9 @@ app.post("/upload", uploader.single("file"), s3.upload, (req, res) => {
 app.get("/get-image-info/:id", (req, res) => {
     db.getImageInfo(req.params.id)
         .then((result) => res.json(result))
-        .catch((err) => console.log("ERR IN GET-IMAGE INFO:", err));
+        .catch(() => {
+            res.json({ success: false });
+        });
 });
 
 app.get("/get-comments/:id", (req, res) => {
