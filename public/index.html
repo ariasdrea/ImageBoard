@@ -33,17 +33,18 @@
 
         <hr class='hr-in-form'>
 
-        <input v-model='title' type="text" placeholder="title" name="title">
-        <input v-model='description' type="text" placeholder="description" name="description">
-        <input v-model='username' type="text" placeholder="username" name="username"> 
-        <!-- <input v-model='form.tags' type="text" placeholder='tag your pic' name='tags'> -->
-        <!-- Must have name & type = file an accept=image/* means that file must be an img-->
-        <input name='file' type="file" accept="image/*" @change='handleFileChange'>
-        <button class='upload-button' @click='uploadFile'>Upload</button>
+        <section>
+            <input v-model='title' type="text" placeholder="title" name="title">
+            <input v-model='description' type="text" placeholder="description" name="description">
+            <input v-model='username' type="text" placeholder="username" name="username"> 
+            <!-- <input v-model='form.tags' type="text" placeholder='tag your pic' name='tags'> -->
+            <!-- Must have name & type = file an accept=image/* means that file must be an img-->
+            <input name='file' type="file" accept="image/*" @change='handleFileChange'>
+            <button class='upload-button' @click='uploadFile'>Upload</button>
+        <section>
 
         <hr class='hr-in-form'>
 
-        <!--  IMAGES AND TITLE -->
         <div class='all-images'>
             <div class='image-div' v-for='item in images'>
                 <a :href=" '#' + item.id">
@@ -87,7 +88,7 @@
 
                 <hr id='hr-in-modal'>
 
-                <div class='comment-fields'>
+                <section>
                     <p>Comment
                         <input v-model='comment' type='text' placeholder='insert your comment' name='comment'>
                     </p>
@@ -96,7 +97,7 @@
                     </p>
                     <button class='submit-in-modal' @click='insertComment'>submit comment</button>
                     <button class='delete-in-modal' @click='deleteImage'>delete picture</button>
-                </div>
+                </section>
 
 
                 <div id='comment-container' v-if='exists'>

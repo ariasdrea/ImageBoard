@@ -4,7 +4,7 @@
     letter-spacing: 1px;
 }
 
-form {
+section {
     text-align: center;
 }
 
@@ -221,11 +221,6 @@ form {
     text-align: center;
 }
 
-.comment-fields {
-    text-align: center;
-    padding-bottom: 2%;
-}
-
 .arrow {
     font-size: 35px;
 }
@@ -274,6 +269,11 @@ a {
     color: white;
     font-weight: bold;
     cursor: crosshair;
+}
+
+.delete-in-modal,
+.submit-in-modal {
+    margin-bottom: 2%;
 }
 
 .delete-in-modal:hover {

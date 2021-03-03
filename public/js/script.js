@@ -134,7 +134,6 @@
             username: "",
             file: null,
             tags: [],
-            totalImages: "",
             startingPoint: "",
             errInUpload: ""
         },
@@ -168,16 +167,13 @@
                 var self = this;
                 var lastId = this.images[this.images.length - 1].id;
 
-                axios.get("/getAllImages").then(function (resp) {
-                    var totalImagesInDb = resp.data.rowCount;
-                    self.totalImages = totalImagesInDb;
-                });
-
                 axios.get("/get-more-images/" + lastId).then(function (resp) {
                     self.images.push.apply(self.images, resp.data);
 
-                    if (self.images.length === self.totalImages) {
-                        self.morePics = false;
+                    for (let i = 0; i < resp.data.length; i++) {
+                        if (resp.data[i].id === resp.data[i].lowestId) {
+                            self.morePics = false;
+                        }
                     }
                 });
             },
@@ -215,7 +211,6 @@
                     });
             },
             closingTheComponent: function () {
-                console.log("running");
                 this.imageId = null;
                 history.replaceState(null, null, " ");
             },

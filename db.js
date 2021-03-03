@@ -41,11 +41,11 @@ exports.uploadImage = (url, username, title, description) => {
 //     );
 // };
 
-
 // subquery that gets info for selected, next, and prev picture
-exports.getImageInfo = id => {
-    return db.query(
-        `SELECT *, (
+exports.getImageInfo = (id) => {
+    return db
+        .query(
+            `SELECT *, (
             SELECT min(id) FROM images
             WHERE id > $1
         ) AS "nextId", (
@@ -54,51 +54,57 @@ exports.getImageInfo = id => {
         ) AS "prevId"
         FROM images
         WHERE id = $1`,
-        [id]
-    ).then(results => {
-        return results.rows;
-    });
-};
-
-exports.getComments = id => {
-    return db.query(
-        `SELECT *
-        FROM comments
-        WHERE images_id = $1
-        `,
-        [id]
-    ).then(results => {
-        return results.rows;
-    });
-};
-
-exports.getMoreImages = lastId => {
-    return db
-        .query(
-            `SELECT *
-        FROM images
-        WHERE id < $1
-        ORDER BY id DESC
-        LIMIT 3`,
-            [lastId]
+            [id]
         )
-        .then(results => {
+        .then((results) => {
             return results.rows;
         });
 };
 
-exports.insertComment = (comment, modalUser, images_id) => {
-    return db.query(
-        `INSERT INTO comments (comment, modalUser, images_id)
-        VALUES ($1, $2, $3)
-        RETURNING *`,
-        [comment, modalUser, images_id]
-    ).then(result => {
-        return result.rows[0];
-    });
+exports.getComments = (id) => {
+    return db
+        .query(
+            `SELECT *
+        FROM comments
+        WHERE images_id = $1
+        `,
+            [id]
+        )
+        .then((results) => {
+            return results.rows;
+        });
 };
 
-exports.deleteImageAndComments = id => {
+exports.getMoreImages = (lastId) => {
+    return db
+        .query(
+            ` SELECT url, title, id, (
+                SELECT id FROM images
+                ORDER BY id ASC
+                LIMIT 1
+            ) AS "lowestId" FROM images
+            WHERE id < $1
+            ORDER BY id DESC
+            LIMIT 3;`,
+            [lastId]
+        )
+        .then(({ rows }) => rows);
+};
+
+exports.insertComment = (comment, modalUser, images_id) => {
+    return db
+        .query(
+            `INSERT INTO comments (comment, modalUser, images_id)
+        VALUES ($1, $2, $3)
+        RETURNING *`,
+            [comment, modalUser, images_id]
+        )
+        .then((result) => {
+            return result.rows[0];
+        });
+};
+
+exports.deleteImageAndComments = (id) => {
     return db.query(
         `DELETE FROM images
         WHERE id = $1`,
