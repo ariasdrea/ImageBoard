@@ -163,7 +163,7 @@ form {
     transform: translate(-50%, -50%);
     background-color: black;
     color: white;
-    padding-top: 15px;
+    padding-top: 5%;
 }
 
 .img-arrow-container {
@@ -319,4 +319,20 @@ button:focus {
 .error {
     text-align: center;
     color: red;
+}
+
+.notification {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 50px;
+    width: 100vw;
+    background-color: black;
+    border-radius: 2%;
+    box-shadow: 0 0 5px 2px #555;
+    color: white;
+}
+
+.notification:hover {
+    cursor: pointer;
 }

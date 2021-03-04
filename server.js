@@ -117,4 +117,15 @@ app.get("/getLastThreeImgs", (req, res) => {
     db.getLastThreeImgs().then(({ rows }) => res.json(rows));
 });
 
+app.get("/check-for-new-image/:id", (req, res) => {
+    console.log(req.params.id);
+    db.checkForNewImg(req.params.id)
+        .then(({ rows }) => {
+            // console.log(rows);
+            // console.log(!rows.length);
+            res.json(rows);
+        })
+        .catch((err) => console.log("err in checking for new img:", err));
+});
+
 app.listen(process.env.PORT || 8080, () => console.log("8080 listening!"));

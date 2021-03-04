@@ -25,8 +25,6 @@
                 axios
                     .get("/get-image-info/" + this.imageId)
                     .then(function (resp) {
-                        // console.log("resp: ", resp);
-                        // !resp.data.success breaks the next and prev buttons
                         if (!resp.data.length) {
                             self.$emit("close-component");
                         } else {
@@ -37,19 +35,16 @@
                             self.nextId = resp.data[0].nextId;
                             self.prevId = resp.data[0].prevId;
                         }
-                    })
-                    .then(function () {
-                        axios
-                            .get("/get-comments/" + self.imageId)
-                            .then(function (resp) {
-                                self.comments = resp.data;
+                    });
 
-                                if (!self.comments.length) {
-                                    self.exists = false;
-                                } else {
-                                    self.exists = true;
-                                }
-                            });
+                axios
+                    .get("/get-comments/" + this.imageId)
+                    .then(function (resp) {
+                        self.comments = resp.data;
+
+                        !self.comments.length
+                            ? (self.exists = false)
+                            : (self.exists = true);
                     });
             }
         },
@@ -117,7 +112,6 @@
                 axios
                     .post("/delete-image/" + this.imageId)
                     .then(function () {
-                        // close-component refers to fn inside image-modal in html
                         self.$emit("close-component");
                         self.$emit("update-images");
                     })
@@ -141,7 +135,9 @@
             file: null,
             tags: [],
             startingPoint: "",
-            errInUpload: ""
+            errInUpload: "",
+            notificationVisible: false,
+            newImgs: []
         },
         mounted: function () {
             var self = this;
@@ -149,10 +145,6 @@
             window.addEventListener("hashchange", function () {
                 self.imageId = location.hash.slice(1);
             });
-
-            // setInterval(function () {
-            //     console.log("hello");
-            // }, 2000);
 
             axios.get("/images").then(function (resp) {
                 self.images = resp.data.rows;
@@ -168,6 +160,17 @@
                     self.startingPoint = true;
                 }
             });
+
+            setInterval(function () {
+                axios
+                    .get(`/check-for-new-image/${self.images[0].id}`)
+                    .then(function (resp) {
+                        if (resp.data.length) {
+                            self.notificationVisible = true;
+                            self.newImgs = resp.data;
+                        }
+                    });
+            }, 8000);
         },
         methods: {
             show: function () {
@@ -245,6 +248,12 @@
                         }
                     });
                 });
+            },
+            showNewImg: function () {
+                for (let i = 0; i < this.newImgs.length; i++) {
+                    this.images.unshift(this.newImgs[i]);
+                    this.notificationVisible = false;
+                }
             }
         }
     });

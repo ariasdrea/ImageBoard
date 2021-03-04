@@ -45,6 +45,10 @@
 
         <hr class='hr-in-form'>
 
+        <div class='notification' v-if="notificationVisible">
+            <p @click='showNewImg'> A new image has been uploaded - click to 👀 </p>
+        </div>
+
         <div class='all-images'>
             <div class='image-div' v-for='item in images'>
                 <a :href=" '#' + item.id">

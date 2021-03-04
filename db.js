@@ -124,6 +124,15 @@ exports.getLastThreeImgs = () => {
     );
 };
 
+exports.checkForNewImg = (id) => {
+    return db.query(
+        `SELECT * FROM images
+        WHERE id > $1;
+        `,
+        [id]
+    );
+};
+
 ///////// TAGS
 // exports.insertTags = tag => {
 //     return db.query(`
