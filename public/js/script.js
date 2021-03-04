@@ -170,7 +170,7 @@
                             self.newImgs = resp.data;
                         }
                     });
-            }, 8000);
+            }, 5000);
         },
         methods: {
             show: function () {

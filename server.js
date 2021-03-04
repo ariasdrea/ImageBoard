@@ -118,13 +118,8 @@ app.get("/getLastThreeImgs", (req, res) => {
 });
 
 app.get("/check-for-new-image/:id", (req, res) => {
-    console.log(req.params.id);
     db.checkForNewImg(req.params.id)
-        .then(({ rows }) => {
-            // console.log(rows);
-            // console.log(!rows.length);
-            res.json(rows);
-        })
+        .then(({ rows }) => res.json(rows))
         .catch((err) => console.log("err in checking for new img:", err));
 });
 
