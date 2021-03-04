@@ -8,7 +8,7 @@ Instagram-inspired, single-page application website where anyone can post an ima
 
 - Handlebars, Vue.js, AWS S3, Node.js, Express.js & PostgreSQL
 
-## Additional Features
+## Implemented Features
 
 - **Previous & Next Button**
     <br>
@@ -17,6 +17,11 @@ Instagram-inspired, single-page application website where anyone can post an ima
 - **Deleting Images and Related Comments**
     <br>
     Users can delete any image. When doing so, all comments related to the specific image will also be deleted in the database.
+
+- **Alerting Users when new image has been uploaded**
+    <br>
+    In this Single Page Application, users are alerted when new images have been uploaded to the site since they arrived via a notification. Clicking the notification will render the new images without deviating from SPA functionality.
+
 
 ## Preview
 
