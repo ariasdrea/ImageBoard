@@ -7,6 +7,8 @@ const path = require("path");
 const config = require("./config.json");
 const s3 = require("./s3");
 const moment = require("moment");
+const basicAuth = require("basic-auth");
+const { name, pass } = require("./secrets");
 
 app.use(express.json());
 app.disable("x-powered-by");
@@ -29,14 +31,26 @@ var uploader = multer({
     }
 });
 
+const auth = function (req, res, next) {
+    const creds = basicAuth(req);
+    if (!creds || creds.name != `${name}` || creds.pass != `${pass}`) {
+        res.setHeader(
+            "WWW-Authenticate",
+            'Basic realm="Enter your credentials to see this stuff."'
+        );
+        res.sendStatus(401);
+    } else {
+        next();
+    }
+};
+
+app.use(auth);
 app.use(express.static("./public"));
 app.use(express.static("./uploads"));
 
 app.get("/images", (req, res) => {
     db.getImages()
-        .then(({ rows, rowCount }) => {
-            res.json({ rows, rowCount });
-        })
+        .then(({ rows, rowCount }) => res.json({ rows, rowCount }))
         .catch((err) => console.log("ERR in GET - images:", err));
 });
 
