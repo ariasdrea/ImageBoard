@@ -5,7 +5,7 @@
 Instagram-inspired, single-page application website where anyone can post an image of their choosing, add a title and description, and comment on images. The theme of this imageboard is beautiful doors around the world.
 
 ## Technology
-
+<span><img src="https://img.shields.io/badge/JavaScript-blue?style=flat-square&logo=javascript&logoColor=white"></span>
 <span><img src="https://img.shields.io/badge/Vue.js-black?style=flat-square&logo=vuedotjs"></span>
 <span><img src="https://img.shields.io/badge/Express-lightgrey?style=flat-square&logo=express"></span>
 <span><img src="https://img.shields.io/badge/Node.js-green?style=flat-square&logo=nodedotjs"></span>
